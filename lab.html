@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💻 Laboratórios Práticos • Tema 01</title>
+<style>
+  :root{
+    --bg-body:#090d16; --surface-dark:#111827; --surface-card:#18243c;
+    --surface-hover:#1f293d; --primary:#0284c7; --primary-light:#38bdf8;
+    --accent:#ea580c; --accent-hover:#c2410c; --emerald:#10b981; --purple:#8b5cf6;
+    --text-main:#f8fafc; --text-muted:#cbd5e1;
+    --border-dark:#2a3854; --radius-main:16px; --transicao:all .22s ease;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at 10% 12%,#0f2b48 0%,#090d16 65%);
+    color:var(--text-main);min-height:100vh;padding:22px 14px 90px;line-height:1.6;}
+  .container{max-width:1150px;margin:0 auto;}
+  .header{background:linear-gradient(135deg,#0369a1 0%,#0284c7 45%,#0d9488 100%);
+    border-radius:var(--radius-main);padding:34px 22px;margin-bottom:22px;text-align:center;
+    color:#fff;box-shadow:0 12px 35px rgba(2,132,199,.35);}
+  .header h1{font-size:clamp(1.4rem,3.2vw,2.1rem);margin-bottom:8px;letter-spacing:-.5px;
+    display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+  .header h1 span{color:#fed7aa;}
+  .header p{opacity:.95;font-size:1rem;max-width:860px;margin:0 auto;}
+  .badge-group{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+  .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+    padding:5px 14px;border-radius:30px;font-size:.74rem;font-weight:700;color:#fff;}
+  .filtro-card{background:var(--surface-dark);border:2px solid var(--border-dark);
+    border-radius:var(--radius-main);padding:14px 18px;margin-bottom:24px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .filtro-botoes{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn-filtro{background:#1e293b;color:var(--text-muted);border:1px solid var(--border-dark);
+    padding:8px 16px;border-radius:30px;font-size:.82rem;font-weight:700;cursor:pointer;
+    font-family:inherit;transition:var(--transicao);}
+  .btn-filtro:hover{color:#fff;background:var(--surface-hover);}
+  .btn-filtro.active{background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;
+    border-color:var(--primary-light);box-shadow:0 0 12px rgba(56,189,248,.4);}
+  .lab-card{background:var(--surface-dark);border:2px solid var(--border-dark);
+    border-radius:var(--radius-main);margin-bottom:30px;overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);transition:var(--transicao);}
+  .lab-card:hover{border-color:#475569;}
+  .lab-card-header{padding:18px 22px;background:#0f172a;border-bottom:1px solid var(--border-dark);}
+  .lab-tag-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .tag-num{background:var(--accent);color:#fff;font-size:.76rem;font-weight:900;
+    padding:3px 10px;border-radius:6px;font-family:monospace;}
+  .tag-categoria{background:rgba(56,189,248,.12);color:var(--primary-light);border:1px solid rgba(56,189,248,.3);
+    font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:6px;}
+  .lab-card-title{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:4px;}
+  .lab-card-sub{font-size:.88rem;color:var(--text-muted);}
+  .code-wrapper{background:#070b12;border-top:1px solid var(--border-dark);}
+  .code-toolbar{display:flex;justify-content:space-between;align-items:center;
+    background:#0b1120;padding:8px 16px;border-bottom:1px solid #1e293b;flex-wrap:wrap;gap:8px;}
+  .code-abas{display:flex;gap:4px;}
+  .btn-aba{background:transparent;border:none;color:#64748b;padding:6px 12px;
+    font-size:.78rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;
+    font-family:inherit;transition:var(--transicao);}
+  .btn-aba:hover{color:#cbd5e1;}
+  .btn-aba.active{color:var(--primary-light);border-bottom-color:var(--primary-light);}
+  .code-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .code-actions button{border:none;padding:6px 12px;border-radius:6px;cursor:pointer;
+    font-size:.74rem;font-weight:700;transition:var(--transicao);
+    display:inline-flex;align-items:center;gap:4px;font-family:inherit;color:#fff;}
+  .btn-copy{background:var(--emerald);color:#042f2e;}
+  .btn-copy:hover{background:#059669;color:#fff;}
+  .btn-prev{background:var(--purple);}
+  .btn-prev:hover{background:#7c3aed;transform:scale(1.02);}
+  .btn-oc{background:var(--accent);}
+  .btn-oc:hover{background:var(--accent-hover);transform:scale(1.02);}
+  .btn-down{background:var(--primary);}
+  .btn-down:hover{background:#0369a1;transform:scale(1.02);}
+  .code-pane{display:none;padding:16px 18px;color:#e2e8f0;font-family:'Courier New',monospace;
+    font-size:.82rem;line-height:1.65;overflow-x:auto;white-space:pre;max-height:380px;
+    background:#070b12;}
+  .code-pane.active{display:block;}
+  .preview-inline{margin:14px;border:2px solid var(--border-dark);border-radius:12px;
+    overflow:hidden;background:#090d16;}
+  .preview-header{display:flex;justify-content:space-between;align-items:center;
+    padding:8px 14px;background:#0f172a;border-bottom:1px solid #1e293b;
+    color:#cbd5e1;font-size:.78rem;font-weight:700;font-family:monospace;}
+  .preview-close{background:transparent;border:1px solid #334155;color:#f87171;
+    padding:2px 8px;border-radius:5px;cursor:pointer;font-size:.72rem;font-weight:700;}
+  .preview-close:hover{background:#450a0a;}
+  .preview-inline iframe{width:100%;height:380px;border:none;background:#fff;display:block;}
+  .analise-card{background:#0d1627;border-top:2px solid #1e293b;padding:20px 24px;
+    font-size:.9rem;line-height:1.65;color:#f1f5f9;}
+  .analise-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+  .analise-box{background:rgba(255,255,255,.02);border:1px solid var(--border-dark);
+    border-radius:10px;padding:14px 18px;}
+  .analise-box h4{color:var(--primary-light);font-size:.94rem;margin-bottom:8px;}
+  .analise-box p{color:#cbd5e1;font-size:.88rem;margin-bottom:8px;}
+  .analise-box ul{margin-left:18px;color:#cbd5e1;font-size:.87rem;}
+  .analise-box li{margin-bottom:4px;}
+  code{background:#1e293b;color:#38bdf8;padding:2px 6px;border-radius:4px;
+    font-family:'Courier New',monospace;font-size:.88em;font-weight:bold;}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--emerald);color:#042f2e;
+    padding:12px 20px;border-radius:10px;font-weight:800;font-size:.85rem;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);display:none;z-index:9999;}
+  @media(max-width:768px){
+    .analise-grid{grid-template-columns:1fr;}
+    .code-toolbar{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>💻 Laboratórios Práticos &bull; <span>Tema 01</span></h1>
+    <p>8 projetos para materializar os conceitos da apostila: linha do tempo, comparador de eras, tabela de métricas, cards de desafios × oportunidades, SEO, personas e time.</p>
+    <div class="badge-group">
+      <span>🕰️ Linha do Tempo</span>
+      <span>⚖️ Desafios × Oportunidades</span>
+      <span>🎯 Persona</span>
+      <span>🔍 SEO Avançado</span>
+      <span>📊 Métricas</span>
+      <span>👥 Time</span>
+    </div>
+  </header>
+
+  <div class="filtro-card">
+    <span style="font-size:.86rem;font-weight:800;color:#94a3b8;">FILTRAR:</span>
+    <div class="filtro-botoes">
+      <button type="button" class="btn-filtro active" data-filtro="todos">🌟 Todos os 8</button>
+      <button type="button" class="btn-filtro" data-filtro="evolucao">🕰️ Evolução</button>
+      <button type="button" class="btn-filtro" data-filtro="estrategia">⚖️ Estratégia</button>
+      <button type="button" class="btn-filtro" data-filtro="seo">🔍 SEO</button>
+      <button type="button" class="btn-filtro" data-filtro="metricas">📊 Métricas</button>
+    </div>
+  </div>
+
+  <main id="container-labs"></main>
+</div>
+
+<div class="toast" id="toast">✅ Feito!</div>
+
+<script>
+var LABS = [
+  {
+    id:"lab1", num:"LAB 01",
+    titulo:"Linha do tempo visual — as 4 eras da evolução",
+    sub:"Representação gráfica da narrativa histórica da apostila: estático, CMS, SEO/mobile, IA/personalização.",
+    categorias:["evolucao"],
+    conceitos:[
+      "A apostila descreve a evolução como <strong>narrativa de constante adaptação</strong>. Cada era resolve um problema e cria outros.",
+      "A linha do tempo horizontal mostra as 4 eras sobrepostas — cada uma nasce dentro da anterior e continua existindo (sites estáticos ainda existem em 2026, mas coexistem com IA).",
+      "Marcar o período e o ícone visual ajuda a memorizar a ordem cronológica, que é base para as questões de evolução histórica."
+    ],
+    observar:[
+      "Repare nos números de 1 a 4 e nas datas — a leitura da esquerda para a direita é a ordem do progresso.",
+      "Cada card tem tags com o nome das tecnologias da época (ex: '1990', 'CMS', 'SEO', 'IA'), sinalizando o marco principal.",
+      "As cores vão ficando mais saturadas da esquerda para a direita: o sinal visual reforça a ideia de evolução."
+    ],
+    html:'<h2>🕰️ Linha do tempo</h2><div class="linha"><div class="era1"><span class="num">1</span><h3>Sites Estáticos</h3><p>Anos 1990</p><div class="tags"><span>HTML</span><span>FTP</span></div></div><div class="seta">→</div><div class="era2"><span class="num">2</span><h3>CMS e Redes</h3><p>Anos 2000</p><div class="tags"><span>WordPress</span><span>Blogs</span></div></div><div class="seta">→</div><div class="era3"><span class="num">3</span><h3>SEO e Mobile</h3><p>Anos 2010</p><div class="tags"><span>Google</span><span>Responsivo</span></div></div><div class="seta">→</div><div class="era4"><span class="num">4</span><h3>IA e Personalização</h3><p>2018-2026</p><div class="tags"><span>IA</span><span>VR/AR</span></div></div></div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:22px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#0369a1;margin-bottom:16px;text-align:center}.linha{display:flex;align-items:stretch;justify-content:space-between;gap:8px;flex-wrap:wrap}.linha>div:not(.seta){flex:1;min-width:140px;border:2px solid #cbd5e1;border-radius:12px;padding:14px 10px;text-align:center;position:relative;transition:transform .2s}.linha>div:not(.seta):hover{transform:translateY(-3px)}.num{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#fff;border:2px solid currentColor;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900}.era1{border-color:#64748b;color:#334155}.era2{border-color:#0284c7;color:#0369a1}.era3{border-color:#7c3aed;color:#6d28d9}.era4{border-color:#059669;color:#047857}.linha h3{font-size:.86rem;margin-bottom:3px}.linha p{font-size:.72rem;opacity:.7;margin-bottom:8px}.tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}.tags span{font-size:.62rem;background:rgba(0,0,0,.08);padding:2px 8px;border-radius:10px;font-weight:700}.seta{display:flex;align-items:center;color:#94a3b8;font-weight:900;font-size:1.2rem}@media(max-width:600px){.seta{transform:rotate(90deg)}}'
+  },
+  {
+    id:"lab2", num:"LAB 02",
+    titulo:"Comparador: site estático × site moderno",
+    sub:"Duas colunas lado a lado com as principais diferenças citadas na apostila.",
+    categorias:["evolucao"],
+    conceitos:[
+      "A apostila pontua que sites estáticos tinham <strong>simplicidade</strong>, sem personalização ou interação.",
+      "Sites modernos usam CMS headless, IA, personalização — mas a complexidade trouxe desafios (saturação, algoritmos).",
+      "Comparar lado a lado torna visível a magnitude da transformação."
+    ],
+    observar:[
+      "Repare que o lado esquerdo tem texto puro e links simples; o direito tem campos, botões, área de interação.",
+      "A barra de status visual (cabeçalho escuro × cabeçalho colorido) é o primeiro sinal da mudança de era.",
+      "Role para baixo: o estático é <strong>mais curto</strong>, o moderno é <strong>mais longo</strong> — prova visual do aumento de exigência."
+    ],
+    html:'<h2>Evolução: um antes e depois</h2><div class="comparador"><div class="coluna antigo"><h3>📄 Site Estático (1995)</h3><p><strong>Bem-vindo ao nosso site!</strong></p><p>Somos uma empresa de consultoria fundada em 1995.</p><p>Telefone: (32) 3000-0000</p><a href="#">Fale conosco</a><p class="rodape">© 1995</p></div><div class="coluna moderno"><h3>🚀 Site Moderno (2026)</h3><p><strong>Bem-vindo(a)!</strong> Personalizamos a experiência para você.</p><label>Buscar:</label><input placeholder="Digite o que procura..." /><div class="cards"><div class="mini">📊 Análise em tempo real</div><div class="mini">🤖 Recomendação por IA</div><div class="mini">🎯 Personalização</div></div><a class="btn">Começar</a><p class="rodape">© 2026 • LGPD</p></div></div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:22px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#0369a1;margin-bottom:14px}.comparador{display:grid;grid-template-columns:1fr 1fr;gap:14px}.coluna{background:#fff;border:2px solid #cbd5e1;border-radius:12px;padding:16px}.antigo{border-color:#94a3b8;background:#f1f5f9}.moderno{border-color:#0284c7}.coluna h3{font-size:.88rem;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}.antigo h3{color:#475569}.moderno h3{color:#0284c7}.coluna p{font-size:.82rem;margin-bottom:8px;line-height:1.5}.coluna a{color:#0284c7;font-size:.8rem;text-decoration:underline}.coluna label{display:block;font-size:.76rem;font-weight:700;margin-bottom:4px}.coluna input{width:100%;padding:7px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:.8rem;margin-bottom:10px}.cards{display:flex;gap:4px;margin-bottom:10px}.mini{background:#e0f2fe;color:#0369a1;padding:6px;border-radius:6px;font-size:.66rem;font-weight:700;flex:1;text-align:center}.btn{display:inline-block;background:#0284c7;color:#fff;padding:7px 16px;border-radius:6px;font-size:.78rem;text-decoration:none;font-weight:700}.rodape{font-size:.68rem;opacity:.6;margin-top:10px;border-top:1px dashed #cbd5e1;padding-top:6px}@media(max-width:600px){.comparador{grid-template-columns:1fr}}'
+  },
+  {
+    id:"lab3", num:"LAB 03",
+    titulo:"Tabela de Métricas Avançadas — as 9 da apostila",
+    sub:"Tabela acessível com as 9 métricas citadas, definição e exemplo de leitura.",
+    categorias:["metricas"],
+    conceitos:[
+      "A apostila lista <strong>9 métricas avançadas</strong>: Conversão por Segmento, Funil, Permanência, Rejeição, Compartilhamento, Mobile, Testes A/B, Palavras-chave e Canal de Marketing.",
+      "Cada métrica responde a uma pergunta diferente. Usar a métrica errada leva a conclusões erradas.",
+      "Tabelas com <code>&lt;caption&gt;</code>, <code>scope='col'</code> e <code>scope='row'</code> ficam acessíveis para leitores de tela."
+    ],
+    observar:[
+      "A tabela tem <code>&lt;caption&gt;</code> no topo, informando o assunto para quem usa leitor de tela.",
+      "Cada célula é clicável — abra o preview e clique em qualquer linha para ver um exemplo real.",
+      "As colunas estão alinhadas com <code>scope='col'</code> — o cabeçalho é anunciado corretamente."
+    ],
+    html:'<table><caption>9 métricas avançadas (fonte: apostila Proz — Tema 01)</caption><thead><tr><th scope="col">#</th><th scope="col">Métrica</th><th scope="col">O que mede</th><th scope="col">Exemplo de leitura</th></tr></thead><tbody><tr><th scope="row">1</th><td>Conversão por Segmento</td><td>Conversão por origem do tráfego</td><td>Instagram: 3,2% • Google: 5,8%</td></tr><tr><th scope="row">2</th><td>Análise de Funil</td><td>Comportamento em cada etapa</td><td>1000 → 300 → 60 (compra)</td></tr><tr><th scope="row">3</th><td>Tempo de Permanência</td><td>Quanto o usuário fica no conteúdo</td><td>Vídeo: 3min • Texto: 45s</td></tr><tr><th scope="row">4</th><td>Taxa de Rejeição</td><td>Saída sem interagir</td><td>Contato: 78% • Blog: 42%</td></tr><tr><th scope="row">5</th><td>Compartilhamento Social</td><td>Alcance orgânico real</td><td>Promoção: 10x mais que institucional</td></tr><tr><th scope="row">6</th><td>Engajamento Mobile</td><td>Comportamento no celular</td><td>82% dos acessos</td></tr><tr><th scope="row">7</th><td>Testes A/B</td><td>Comparar versões de conteúdo</td><td>Título A: 4% × B: 7%</td></tr><tr><th scope="row">8</th><td>Palavras-chave</td><td>Desempenho orgânico por termo</td><td>"gestão web": 500 • "Cms headless": 80</td></tr><tr><th scope="row">9</th><td>Conversão por Canal</td><td>Eficácia de cada canal</td><td>E-mail: 8% • Pago: 3%</td></tr></tbody></table>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:18px;background:#f8fafc;color:#0f172a}table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.06);border-radius:10px;overflow:hidden}caption{background:#0284c7;color:#fff;font-weight:bold;padding:12px;text-align:left;font-size:.86rem}thead th{background:#0369a1;color:#fff;padding:10px 8px;text-align:left;font-size:.76rem}tbody th{background:#e0f2fe;color:#0369a1;text-align:center;padding:10px;font-size:.8rem;font-weight:900}tbody td{border:1px solid #cbd5e1;padding:10px 8px;font-size:.78rem;line-height:1.4}tbody tr:nth-child(even) td{background:#f8fafc}tbody tr:hover td{background:#fef3c7}'
+  },
+  {
+    id:"lab4", num:"LAB 04",
+    titulo:"Cards: Desafios × Oportunidades",
+    sub:"Painel visual com as duas colunas lado a lado — 6 desafios e 7 oportunidades, conforme a apostila.",
+    categorias:["estrategia"],
+    conceitos:[
+      "A apostila apresenta <strong>6 desafios avançados</strong>: saturação, mudanças algorítmicas, personalização, diversificação, evolução tecnológica e métricas complexas.",
+      "E <strong>7 oportunidades</strong>: experiência do usuário, multimídia envolvente, insights, expansão global, inovação, conexões e colaboração.",
+      "A dualidade é essencial: cada desafio abre uma porta nova. Quem enxerga apenas o obstáculo perde a chance."
+    ],
+    observar:[
+      "Note o esquema de cores: vermelho-laranja nos desafios, verde nas oportunidades.",
+      "Cada card tem um ícone que ajuda a memorizar a ideia central.",
+      "Role a página: os cards de oportunidade são 7 — um a mais que os desafios, sinalizando que há mais ganhos que perdas."
+    ],
+    html:'<h2>⚖️ Desafios e Oportunidades Avançadas</h2><div class="grid"><div class="coluna desafios"><h3>⚠️ Desafios (6)</h3><div class="card">📚 <strong>1. Saturação de Conteúdo</strong><p>Muita coisa publicada. Destacar exige qualidade cirúrgica.</p></div><div class="card">⚡ <strong>2. Mudanças Algorítmicas</strong><p>Google e redes mudam regras. Adaptação constante.</p></div><div class="card">🎯 <strong>3. Personalização Requer Precisão</strong><p>Requer dados, ética e compreensão do usuário.</p></div><div class="card">🌐 <strong>4. Diversificação de Plataformas</strong><p>Site, app, redes — tudo precisa ser coeso.</p></div><div class="card">🚀 <strong>5. Evolução Tecnológica</strong><p>VR, voz, IA — exigem aprender sempre.</p></div><div class="card">📊 <strong>6. Métricas Complexas</strong><p>Dados avançados exigem interpretação correta.</p></div></div><div class="coluna oportunidades"><h3>✅ Oportunidades (7)</h3><div class="card">✨ <strong>1. Experiência Aprimorada</strong><p>Personalização que encanta.</p></div><div class="card">🎬 <strong>2. Multimídia Envolvente</strong><p>Vídeo e podcast conectam emocionalmente.</p></div><div class="card">🔬 <strong>3. Insights Profundos</strong><p>Ferramentas analíticas revelam comportamento.</p></div><div class="card">🌍 <strong>4. Expansão Global</strong><p>Localizar abre mercados internacionais.</p></div><div class="card">🎨 <strong>5. Inovação Tecnológica</strong><p>AR e VR criam experiências únicas.</p></div><div class="card">🤝 <strong>6. Conexões Profundas</strong><p>Redes sociais aproximam marca e cliente.</p></div><div class="card">🌐 <strong>7. Colaboração Global</strong><p>Equipes remotas trabalham em conjunto.</p></div></div></div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:20px;background:#f8fafc}h2{font-size:1.1rem;color:#0f172a;margin-bottom:16px;text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.coluna{background:#fff;border-radius:12px;padding:14px;border:2px solid}.coluna h3{font-size:.9rem;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}.desafios{border-color:#f87171}.desafios h3{color:#b91c1c}.oportunidades{border-color:#10b981}.oportunidades h3{color:#047857}.card{background:#f8fafc;border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:.76rem;line-height:1.4}.desafios .card strong{color:#b91c1c}.oportunidades .card strong{color:#047857}.card p{margin-top:2px;color:#475569;font-size:.72rem}@media(max-width:600px){.grid{grid-template-columns:1fr}}'
+  },
+  {
+    id:"lab5", num:"LAB 05",
+    titulo:"Painel de SEO Avançado — os 7 pilares",
+    sub:"Os pilares do SEO avançado em cards navegáveis com descrição e dica prática.",
+    categorias:["seo"],
+    conceitos:[
+      "A apostila detalha <strong>7 pilares do SEO avançado</strong>: cauda longa, LSI, intenção de busca, link building, otimização técnica, acompanhamento contínuo e adaptação a mudanças (voz, local).",
+      "SEO avançado difere do básico por considerar <strong>fatores técnicos, estratégicos e de experiência do usuário</strong>.",
+      "Vai além da busca: também otimiza para <strong>mídias sociais e caixas de resposta em destaque</strong>."
+    ],
+    observar:[
+      "Cada card tem 3 elementos: título, descrição curta e dica prática.",
+      "Note que o pilar 7 (mudanças) é diferente dos outros — é sobre <strong>adaptação contínua</strong>, não uma técnica fixa.",
+      "Clique em cada card: a dica prática abre a interpretação do pilar. É ali que o aluno entende como aplicar."
+    ],
+    html:'<h2>🔍 SEO Avançado — os 7 pilares</h2><div class="grid"><div class="seo"><h3>1. Cauda Longa</h3><p>Palavras-chave específicas e altamente direcionadas.</p><div class="dica">💡 Ex: em vez de "marketing", usar "marketing para clínica odontológica em Juiz de Fora".</div></div><div class="seo"><h3>2. LSI (Indexação Semântica Latente)</h3><p>Variações que reforçam o tema principal.</p><div class="dica">💡 Ex: "gestão de conteúdo" → "cms", "publicação web", "calendário editorial".</div></div><div class="seo"><h3>3. Intenção de Busca</h3><p>Entender o que o usuário quer ao digitar.</p><div class="dica">💡 Informacional × transacional × navegacional × comercial.</div></div><div class="seo"><h3>4. Link Building Estratégico</h3><p>Parcerias e conteúdo compartilhável que atrai backlinks de qualidade.</p><div class="dica">💡 Não compre links. Produza conteúdo que outras pessoas queiram citar.</div></div><div class="seo"><h3>5. Otimização Técnica</h3><p>Meta tags, URLs, dados estruturados, velocidade.</p><div class="dica">💡 Velocidade de carregamento afeta a classificação diretamente.</div></div><div class="seo"><h3>6. Acompanhamento Contínuo</h3><p>Ferramentas de análise para identificar tendências.</p><div class="dica">💡 Meça mensalmente. Sem medição, SEO vira chute.</div></div><div class="seo"><h3>7. Adaptação a Mudanças</h3><p>Buscas por voz e pesquisas locais exigem ajuste contínuo.</p><div class="dica">💡 Otimize para perguntas naturais (ex: "qual o melhor horário...").</div></div></div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:20px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#0284c7;margin-bottom:14px;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.seo{background:#fff;border:2px solid #cbd5e1;border-top:4px solid #0284c7;border-radius:10px;padding:12px 14px}.seo h3{font-size:.86rem;color:#0369a1;margin-bottom:4px}.seo p{font-size:.78rem;color:#475569;margin-bottom:8px;line-height:1.4}.dica{background:#fef3c7;border-left:3px solid #d97706;padding:6px 8px;border-radius:4px;font-size:.72rem;color:#78350f}.seo:nth-child(2){border-top-color:#10b981}.seo:nth-child(3){border-top-color:#7c3aed}.seo:nth-child(4){border-top-color:#f59e0b}.seo:nth-child(5){border-top-color:#ec4899}.seo:nth-child(6){border-top-color:#06b6d4}.seo:nth-child(7){border-top-color:#8b5cf6}'
+  },
+  {
+    id:"lab6", num:"LAB 06",
+    titulo:"Funil de métricas — visualização simplificada",
+    sub:"Funil visual com as 4 etapas da jornada, aplicando a métrica 'Análise de Funil' da apostila.",
+    categorias:["metricas"],
+    conceitos:[
+      "A apostila diz que <strong>Análise de Funil</strong> acompanha o comportamento em diferentes estágios para identificar pontos de otimização.",
+      "Um funil típico tem: visita → interesse → decisão → compra.",
+      "Ver o funil em barras grossas mostra onde a perda de usuários é maior — é aí que o esforço deve se concentrar."
+    ],
+    observar:[
+      "As barras mostram o <strong>percentual que sobra</strong> em cada etapa: 100% → 30% → 12% → 6%.",
+      "O maior 'estrago' está entre visita e interesse (100 → 30). Esse é o ponto crítico de otimização.",
+      "Clique em qualquer barra: aparece a taxa de conversão entre ela e a anterior."
+    ],
+    html:'<h2>📊 Funil de Métricas — exemplo</h2><div class="funil"><div class="etapa" data-taxa="100%"><div class="barra" style="width:100%;background:#0284c7"><span>1. Visita • 100%</span></div></div><div class="etapa" data-taxa="30%"><div class="barra" style="width:70%;background:#0891b2"><span>2. Interesse • 30%</span></div></div><div class="etapa" data-taxa="12%"><div class="barra" style="width:40%;background:#0d9488"><span>3. Decisão • 12%</span></div></div><div class="etapa" data-taxa="6%"><div class="barra" style="width:20%;background:#059669"><span>4. Compra • 6%</span></div></div></div><div id="info" class="info">Clique em qualquer barra para ver a taxa de conversão até a etapa anterior.</div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:20px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#0284c7;margin-bottom:14px;text-align:center}.funil{display:flex;flex-direction:column;gap:6px}.etapa{background:#fff;border-radius:8px;padding:2px;cursor:pointer;transition:.2s}.etapa:hover{transform:scale(1.01)}.barra{color:#fff;padding:12px 16px;border-radius:6px;font-weight:bold;font-size:.84rem;transition:width .4s}.info{background:#e0f2fe;border-left:3px solid #0284c7;padding:10px 14px;border-radius:6px;margin-top:14px;font-size:.8rem;color:#0369a1;font-weight:600}',
+    js:'document.querySelectorAll(".etapa").forEach(function(el){el.addEventListener("click",function(){var t=el.dataset.taxa;document.getElementById("info").textContent="Etapa com taxa de "+t+" dos visitantes que chegaram até aqui.";});});'
+  },
+  {
+    id:"lab7", num:"LAB 07",
+    titulo:"Cards do time — quem faz o quê na era da IA",
+    sub:"6 cartões com os papéis na gestão de conteúdo moderna, atualizados pelas exigências da apostila.",
+    categorias:["estrategia"],
+    conceitos:[
+      "A apostila exige <strong>gestão de equipe</strong> como habilidade central — sem papéis bem definidos, não há resultado consistente.",
+      "Na era atual, o <strong>analista de dados</strong> ganha destaque (a decisão baseada em dados é uma das 12 habilidades).",
+      "O <strong>especialista em SEO</strong> passa a atuar estrategicamente (link building, intenção), não apenas otimizando meta tags."
+    ],
+    observar:[
+      "Cada cartão tem a função e o que essa função <strong>entrega de resultado</strong>.",
+      "Note o papel de <strong>Analista de Dados</strong>: ele traduz números em decisões, e isso é habilidade oficial da apostila.",
+      "Clique em cada cartão: abre a interface com <strong>quem essa função conversa</strong> na rotina."
+    ],
+    html:'<h2>👥 Papéis do time editorial em 2026</h2><div class="grade"><div class="papel" data-conv="Conversa com: redator, SEO, dados."><div class="icon">📝</div><h3>Editor de Conteúdo</h3><p>Define a pauta e o calendário. Aprova o que vai ao ar.</p></div><div class="papel" data-conv="Conversa com: editor, SEO, dados."><div class="icon">✍️</div><h3>Redator</h3><p>Escreve com SEO on-page, acessibilidade e narrativa.</p></div><div class="papel" data-conv="Conversa com: CMS, designer, redator."><div class="icon">💻</div><h3>Front-End</h3><p>Monta o visual. Cuida de performance e responsividade.</p></div><div class="papel" data-conv="Conversa com: front-end, editor."><div class="icon">⚙️</div><h3>Admin de CMS</h3><p>Configura campos, usuários e permissões do painel.</p></div><div class="papel" data-conv="Conversa com: redator, front-end, dados."><div class="icon">🔍</div><h3>Especialista em SEO</h3><p>Pesquisa palavras-chave, link building, otimização técnica.</p></div><div class="papel" data-conv="Conversa com: todos — é o hub de dados."><div class="icon">📊</div><h3>Analista de Dados</h3><p>Transforma métricas em decisões e relatórios.</p></div></div><div id="info-conv" class="info">Clique em qualquer cartão para ver com quem essa função conversa.</div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:20px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#0284c7;margin-bottom:14px;text-align:center}.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.papel{background:#fff;border:2px solid #cbd5e1;border-top:4px solid #0284c7;border-radius:10px;padding:12px 14px;cursor:pointer;transition:.2s}.papel:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(2,132,199,.15)}.papel .icon{font-size:1.5rem;margin-bottom:4px}.papel h3{font-size:.86rem;color:#0369a1;margin-bottom:4px}.papel p{font-size:.76rem;color:#475569;margin:0;line-height:1.4}.papel:nth-child(2){border-top-color:#10b981}.papel:nth-child(3){border-top-color:#7c3aed}.papel:nth-child(4){border-top-color:#ea580c}.papel:nth-child(5){border-top-color:#ec4899}.papel:nth-child(6){border-top-color:#f59e0b}.info{background:#e0f2fe;border-left:3px solid #0284c7;padding:10px 14px;border-radius:6px;margin-top:14px;font-size:.8rem;color:#0369a1;font-weight:600}',
+    js:'document.querySelectorAll(".papel").forEach(function(el){el.addEventListener("click",function(){document.getElementById("info-conv").textContent=el.dataset.conv;});});'
+  },
+  {
+    id:"lab8", num:"LAB 08",
+    titulo:"Painel de engajamento — as 10 estratégias em cards",
+    sub:"Painel visual com as 10 estratégias de engajamento listadas na apostila, cada uma com exemplo prático.",
+    categorias:["estrategia"],
+    conceitos:[
+      "A apostila lista <strong>10 estratégias</strong> para melhorar o engajamento: conteúdo de qualidade, narrativa, mídias visuais, interatividade, resposta a comentários, UGC, personalização, campanhas, acesso antecipado e consistência.",
+      "Engajamento importa por 5 razões: relacionamento, visibilidade, feedback, comunidade e conversão.",
+      "Nenhuma estratégia sozinha funciona — o ideal é combinar várias ao longo do tempo."
+    ],
+    observar:[
+      "São 10 cards — o número está correto com a apostila.",
+      "Cada card traz uma <strong>dica de aplicação</strong> diferente. Não é só a definição.",
+      "Note que a estratégia 10 (consistência) fecha o painel: tudo depende de regularidade."
+    ],
+    html:'<h2>❤️ 10 estratégias de engajamento</h2><div class="grid"><div class="card"><span class="num">1</span><h4>Conteúdo de Qualidade</h4><p>Valioso, relevante e bem pesquisado.</p><div class="dica">💡 Invista em pesquisa antes de escrever.</div></div><div class="card"><span class="num">2</span><h4>Narrativa Atraente</h4><p>Histórias envolventes e emocionais.</p><div class="dica">💡 Comece com uma cena ou pergunta.</div></div><div class="card"><span class="num">3</span><h4>Mídias Visuais</h4><p>Imagens, vídeos, infográficos.</p><div class="dica">💡 1 imagem boa vale mais que 5 ruins.</div></div><div class="card"><span class="num">4</span><h4>Interatividade</h4><p>Enquetes, quizzes, questionários.</p><div class="dica">💡 Todo post pode ser uma enquete.</div></div><div class="card"><span class="num">5</span><h4>Responder Comentários</h4><p>Mostrar que a marca escuta.</p><div class="dica">💡 Responda em até 24h.</div></div><div class="card"><span class="num">6</span><h4>UGC (Conteúdo do Usuário)</h4><p>Incentivar a criação pelo público.</p><div class="dica">💡 Concursos de posts funcionam bem.</div></div><div class="card"><span class="num">7</span><h4>Personalização</h4><p>Conteúdo sob medida para o interesse.</p><div class="dica">💡 Use segmentação de e-mail marketing.</div></div><div class="card"><span class="num">8</span><h4>Campanhas e Desafios</h4><p>Concursos e desafios com participação.</p><div class="dica">💡 Ofereça recompensa clara.</div></div><div class="card"><span class="num">9</span><h4>Acesso Antecipado</h4><p>Conteúdo exclusivo para fiéis.</p><div class="dica">💡 "Lançamento em primeira mão" motiva.</div></div><div class="card"><span class="num">10</span><h4>Consistência</h4><p>Presença constante ao longo do tempo.</p><div class="dica">💡 1 post por semana é melhor que 10 de uma vez.</div></div></div>',
+    css:'body{font-family:Segoe UI,sans-serif;padding:20px;background:#f8fafc;color:#0f172a}h2{font-size:1.1rem;color:#ec4899;margin-bottom:14px;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.card{background:#fff;border:2px solid #cbd5e1;border-radius:10px;padding:12px 14px;position:relative}.num{position:absolute;top:8px;right:10px;background:#ec4899;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900}.card h4{font-size:.82rem;color:#be185d;margin-bottom:4px;padding-right:30px}.card p{font-size:.74rem;color:#475569;margin-bottom:8px;line-height:1.4}.dica{background:#fdf2f8;border-left:3px solid #be185d;padding:5px 8px;border-radius:4px;font-size:.68rem;color:#831843}'
+  }
+];
+
+function montarArquivoUnico(lab){
+  var jsBloco = lab.js ? '\n  <script>\n' + lab.js + '\n  <\/script>\n' : '';
+  return '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>' + lab.titulo + '</title>\n  <style>\n' + lab.css + '\n  </style>\n</head>\n<body>\n' + lab.html + jsBloco + '</body>\n</html>';
+}
+
+function escapeHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeAttr(t){ return String(t).replace(/"/g,'&quot;'); }
+
+function renderizarLabs(filtro){
+  var container = document.getElementById('container-labs');
+  container.innerHTML = '';
+  LABS.forEach(function(lab){
+    if(filtro !== 'todos' && lab.categorias.indexOf(filtro) === -1) return;
+    var card = document.createElement('article');
+    card.className = 'lab-card';
+    card.id = 'card-' + lab.id;
+    var arqUnico = montarArquivoUnico(lab);
+    var listaConceitos = lab.conceitos.map(function(c){ return '<li>' + c + '</li>'; }).join('');
+    var listaObservar = lab.observar.map(function(o){ return '<li>' + o + '</li>'; }).join('');
+    card.innerHTML =
+      '<div class="lab-card-header">' +
+        '<div class="lab-tag-meta">' +
+          '<span class="tag-num">' + lab.num + '</span>' +
+          lab.categorias.map(function(cat){ return '<span class="tag-categoria">' + cat.toUpperCase() + '</span>'; }).join('') +
+        '</div>' +
+        '<h3 class="lab-card-title">' + lab.titulo + '</h3>' +
+        '<p class="lab-card-sub">' + lab.sub + '</p>' +
+      '</div>' +
+      '<div class="code-wrapper">' +
+        '<div class="code-toolbar">' +
+          '<div class="code-abas">' +
+            '<button type="button" class="btn-aba active" data-lab="' + lab.id + '" data-pane="tudo">Arquivo Único</button>' +
+            '<button type="button" class="btn-aba" data-lab="' + lab.id + '" data-pane="html">HTML</button>' +
+            '<button type="button" class="btn-aba" data-lab="' + lab.id + '" data-pane="css">CSS</button>' +
+          '</div>' +
+          '<div class="code-actions">' +
+            '<button type="button" class="btn-copy" data-copy="' + lab.id + '">📋 Copiar</button>' +
+            '<button type="button" class="btn-prev" data-prev="' + lab.id + '">🧪 Preview</button>' +
+            '<button type="button" class="btn-oc" data-oc="' + lab.id + '">▶️ OneCompiler</button>' +
+            '<button type="button" class="btn-down" data-down="' + lab.id + '">⬇️ Baixar</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="code-pane active" id="' + lab.id + '-pane-tudo"><pre>' + escapeHtml(arqUnico) + '</pre></div>' +
+        '<div class="code-pane" id="' + lab.id + '-pane-html"><pre>' + escapeHtml(lab.html) + '</pre></div>' +
+        '<div class="code-pane" id="' + lab.id + '-pane-css"><pre>' + escapeHtml(lab.css) + '</pre></div>' +
+      '</div>' +
+      '<div id="preview-area-' + lab.id + '"></div>' +
+      '<div class="analise-card">' +
+        '<div class="analise-grid">' +
+          '<div class="analise-box"><h4>📘 Conceitos Demonstrados:</h4><ul>' + listaConceitos + '</ul></div>' +
+          '<div class="analise-box"><h4>🔍 O que Observar no Preview:</h4><ul>' + listaObservar + '</ul></div>' +
+        '</div>' +
+      '</div>';
+    container.appendChild(card);
+  });
+  vincularEventos();
+}
+
+function vincularEventos(){
+  document.querySelectorAll('.btn-aba').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var labId = btn.dataset.lab, pane = btn.dataset.pane;
+      var card = document.getElementById('card-' + labId);
+      card.querySelectorAll('.btn-aba').forEach(function(b){ b.classList.remove('active'); });
+      card.querySelectorAll('.code-pane').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(labId + '-pane-' + pane).classList.add('active');
+    });
+  });
+  document.querySelectorAll('.btn-copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = document.getElementById('card-' + btn.dataset.copy);
+      copiarTexto(card.querySelector('.code-pane.active pre').textContent);
+    });
+  });
+  document.querySelectorAll('.btn-prev').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var labId = btn.dataset.prev;
+      var lab = LABS.find(function(l){ return l.id === labId; });
+      var area = document.getElementById('preview-area-' + labId);
+      var antigo = area.querySelector('.preview-inline');
+      if(antigo){ antigo.remove(); return; }
+      var caixa = document.createElement('div');
+      caixa.className = 'preview-inline';
+      caixa.innerHTML =
+        '<div class="preview-header"><span>🧪 Preview ao Vivo — ' + lab.num + '</span><button type="button" class="preview-close">✕ Fechar</button></div>' +
+        '<iframe sandbox="allow-scripts allow-forms allow-same-origin" srcdoc="' + escapeAttr(montarArquivoUnico(lab)) + '"></iframe>';
+      caixa.querySelector('.preview-close').addEventListener('click', function(){ caixa.remove(); });
+      area.appendChild(caixa);
+    });
+  });
+  document.querySelectorAll('.btn-oc').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lab = LABS.find(function(l){ return l.id === btn.dataset.oc; });
+      var url = 'https://onecompiler.com/html?code=' + encodeURIComponent(montarArquivoUnico(lab));
+      window.open(url, '_blank', 'noopener');
+    });
+  });
+  document.querySelectorAll('.btn-down').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lab = LABS.find(function(l){ return l.id === btn.dataset.down; });
+      var blob = new Blob([montarArquivoUnico(lab)], { type:'text/html;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = lab.id + '.html';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+      mostrarToast('✅ Download iniciado!');
+    });
+  });
+}
+
+function copiarTexto(texto){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(texto).then(function(){ mostrarToast('✅ Código copiado!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = texto; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); mostrarToast('✅ Código copiado!'); } catch(e){}
+    document.body.removeChild(ta);
+  }
+}
+
+var toastTimer = null;
+function mostrarToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.style.display = 'none'; }, 2200);
+}
+
+document.querySelectorAll('.btn-filtro').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.btn-filtro').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderizarLabs(btn.dataset.filtro);
+  });
+});
+
+window.addEventListener('DOMContentLoaded', function(){ renderizarLabs('todos'); });
+</script>
+</body>
+</html>
