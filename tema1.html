@@ -36,6 +36,8 @@
   .tab-btn:hover{color:#fff;background:var(--surface-2);}
   .tab-btn.active{background:linear-gradient(135deg,#0284c7,#2563eb);color:#fff;
     border-color:var(--primary);box-shadow:0 0 12px rgba(56,189,248,.4);}
+  .tab-btn:focus-visible,.q-op:focus-visible,.met-btn:focus-visible,.btn:focus-visible,
+  .era:focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
   .tab-content{display:none;animation:fade .25s ease;}
   .tab-content.active{display:block;}
   @keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
@@ -198,12 +200,26 @@
     border:1px solid var(--ok);padding:10px 18px;border-radius:10px;
     color:var(--text);text-decoration:none;font-size:.86rem;transition:var(--trans);}
   .footer-card a:hover{background:#0d1e1b;border-color:#34d399;}
+
+  /* Modal customizado */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;
+    align-items:center;justify-content:center;z-index:9999;padding:20px;
+    backdrop-filter:blur(2px);}
+  .modal-overlay.show{display:flex;animation:fade .2s ease;}
+  .modal-box{background:var(--surface);border:2px solid var(--primary);border-radius:14px;
+    padding:24px;max-width:400px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.6);}
+  .modal-box p{color:var(--text);font-size:.95rem;margin-bottom:18px;line-height:1.6;}
+  .modal-box .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+
   @media (max-width:720px){
     .dual-grid{grid-template-columns:1fr;}
     .persona-form{grid-template-columns:1fr;}
     .card-aluno .campos{grid-template-columns:1fr;}
     .card{padding:18px 14px;}
     .card h2{font-size:1.1rem;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
   }
 </style>
 </head>
@@ -224,22 +240,22 @@
     <div class="fonte">Base: apostila oficial Proz • Administração de Websites • Tema 01</div>
   </header>
 
-  <nav class="tabs-nav">
-    <button class="tab-btn active" data-aba="aba-evolucao">🕰️ 1. Evolução</button>
-    <button class="tab-btn" data-aba="aba-desafios">⚖️ 2. Desafios × Oportunidades</button>
-    <button class="tab-btn" data-aba="aba-personas">🎯 3. Personas</button>
-    <button class="tab-btn" data-aba="aba-seo">🔍 4. SEO Avançado</button>
-    <button class="tab-btn" data-aba="aba-engajamento">❤️ 5. Engajamento + Multimídia</button>
-    <button class="tab-btn" data-aba="aba-metricas">📊 6. Métricas</button>
-    <button class="tab-btn" data-aba="aba-quiz">📝 7. Quiz</button>
+  <nav class="tabs-nav" role="tablist" aria-label="Seções do Tema 01">
+    <button class="tab-btn active" role="tab" id="tab-evolucao" aria-selected="true" aria-controls="aba-evolucao" data-aba="aba-evolucao">🕰️ 1. Evolução</button>
+    <button class="tab-btn" role="tab" id="tab-desafios" aria-selected="false" aria-controls="aba-desafios" data-aba="aba-desafios">⚖️ 2. Desafios × Oportunidades</button>
+    <button class="tab-btn" role="tab" id="tab-personas" aria-selected="false" aria-controls="aba-personas" data-aba="aba-personas">🎯 3. Personas</button>
+    <button class="tab-btn" role="tab" id="tab-seo" aria-selected="false" aria-controls="aba-seo" data-aba="aba-seo">🔍 4. SEO Avançado</button>
+    <button class="tab-btn" role="tab" id="tab-engajamento" aria-selected="false" aria-controls="aba-engajamento" data-aba="aba-engajamento">❤️ 5. Engajamento + Multimídia</button>
+    <button class="tab-btn" role="tab" id="tab-metricas" aria-selected="false" aria-controls="aba-metricas" data-aba="aba-metricas">📊 6. Métricas</button>
+    <button class="tab-btn" role="tab" id="tab-quiz" aria-selected="false" aria-controls="aba-quiz" data-aba="aba-quiz">📝 7. Quiz</button>
   </nav>
 
-  <div id="aba-evolucao" class="tab-content active">
+  <div id="aba-evolucao" class="tab-content active" role="tabpanel" aria-labelledby="tab-evolucao">
     <section class="card">
       <h2>🕰️ A evolução em 4 grandes marcos</h2>
       <p>A apostila descreve a evolução como uma <em>narrativa fascinante</em> que traça o curso do desenvolvimento digital ao longo das décadas. Cada mudança resolveu um problema concreto da época. Clique em cada era para ver os detalhes.</p>
       <div class="timeline">
-        <div class="era" data-era="1">
+        <div class="era" data-era="1" role="button" tabindex="0" aria-expanded="false">
           <div class="era-topo">
             <div class="era-titulo">📄 Sites estáticos — o início</div>
             <span class="era-data">Anos 1990</span>
@@ -247,7 +263,7 @@
           <div class="era-resumo">Simplicidade total: só texto e imagem, sem personalização nem interação.</div>
           <div class="era-detalhe"><strong>Como a apostila descreve:</strong> "a gestão de conteúdo era caracterizada pela simplicidade dos sites estáticos, onde o foco estava em transmitir informações básicas por meio de texto e imagens. Não havia muitas opções de personalização ou interação."<br><br><strong>Limitação principal:</strong> "a criação de conteúdo online estava limitada a indivíduos com conhecimento técnico." Só quem sabia programar conseguia publicar.<br><br><strong>Efeito no dia a dia:</strong> trocar uma palavra exigia editar código e reenviar o arquivo ao servidor.</div>
         </div>
-        <div class="era" data-era="2">
+        <div class="era" data-era="2" role="button" tabindex="0" aria-expanded="false">
           <div class="era-topo">
             <div class="era-titulo">🗄️ CMS e redes sociais — democratização</div>
             <span class="era-data">Anos 2000</span>
@@ -255,7 +271,7 @@
           <div class="era-resumo">Surgem os Sistemas de Gerenciamento de Conteúdo (CMS). Publicar ficou acessível a qualquer pessoa.</div>
           <div class="era-detalhe"><strong>Como a apostila descreve:</strong> "a ascensão das redes sociais e o surgimento de plataformas de gerenciamento de conteúdo, como os sistemas de gerenciamento de conteúdo (CMS), a gestão de conteúdo web começou a se tornar mais acessível e interativa."<br><br><strong>Conquista da época:</strong> "permitiu que uma variedade maior de pessoas criasse e compartilhasse conteúdo, impulsionando a criação de blogs, fóruns e comunidades online."<br><br><strong>Efeito no dia a dia:</strong> blogs, fóruns e comunidades explodiram. O site deixou de ser vitrine e virou canal de conversa.</div>
         </div>
-        <div class="era" data-era="3">
+        <div class="era" data-era="3" role="button" tabindex="0" aria-expanded="false">
           <div class="era-topo">
             <div class="era-titulo">🔍 SEO + Mobile — busca e mobilidade</div>
             <span class="era-data">Anos 2010</span>
@@ -263,7 +279,7 @@
           <div class="era-resumo">Motores de busca e smartphones viram protagonistas. Design responsivo se torna obrigatório.</div>
           <div class="era-detalhe"><strong>Como a apostila descreve:</strong> "A chegada dos motores de busca e a evolução das práticas de SEO (otimização de mecanismos de busca) abriram novas possibilidades para a visibilidade do conteúdo."<br><br><strong>Consequência:</strong> "um enfoque maior na otimização do conteúdo para classificação em mecanismos de busca, resultando em estratégias de criação de conteúdo mais voltadas para palavras-chave e táticas de link building."<br><br><strong>Depois vieram os smartphones:</strong> "o design responsivo e a otimização móvel se tornaram imperativos para proporcionar uma experiência de usuário coesa em diferentes telas."</div>
         </div>
-        <div class="era" data-era="4">
+        <div class="era" data-era="4" role="button" tabindex="0" aria-expanded="false">
           <div class="era-topo">
             <div class="era-titulo">🤖 IA + Personalização — era atual e futura</div>
             <span class="era-data">2018 → 2026</span>
@@ -276,7 +292,7 @@
     </section>
   </div>
 
-  <div id="aba-desafios" class="tab-content">
+  <div id="aba-desafios" class="tab-content" role="tabpanel" aria-labelledby="tab-desafios">
     <section class="card">
       <h2>⚖️ Desafios e Oportunidades Avançadas</h2>
       <p>A apostila apresenta um cenário dual: o que a evolução tecnológica <strong>dificulta</strong> (desafios) e o que ela <strong>possibilita</strong> (oportunidades). Leia as duas colunas em paralelo — cada desafio tem uma oportunidade correspondente.</p>
@@ -309,7 +325,7 @@
     </section>
   </div>
 
-  <div id="aba-personas" class="tab-content">
+  <div id="aba-personas" class="tab-content" role="tabpanel" aria-labelledby="tab-personas">
     <section class="card">
       <h2>🎯 Público-alvo e Personas Revisitadas</h2>
       <p>A apostila distingue dois conceitos complementares. Leia com atenção:</p>
@@ -323,13 +339,13 @@
       <p>Uma persona útil tem pelo menos cinco campos: <strong>nome fictício, contexto, objetivo, desafio e motivação</strong>. Preencha abaixo e veja a persona se materializando:</p>
       <div class="persona-wrap">
         <div class="persona-form">
-          <div><label>Nome fictício</label><input type="text" id="pNome" value="Ana Souza"></div>
-          <div><label>Idade / contexto</label><input type="text" id="pIdade" value="34 anos, gerente comercial"></div>
-          <div><label>Objetivo principal</label><textarea id="pObjetivo">Encontrar soluções que economizem tempo no trabalho.</textarea></div>
-          <div><label>Desafio atual</label><textarea id="pDesafio">Não tem tempo de pesquisar em vários sites diferentes.</textarea></div>
+          <div><label for="pNome">Nome fictício</label><input type="text" id="pNome" value="Ana Souza"></div>
+          <div><label for="pIdade">Idade / contexto</label><input type="text" id="pIdade" value="34 anos, gerente comercial"></div>
+          <div><label for="pObjetivo">Objetivo principal</label><textarea id="pObjetivo">Encontrar soluções que economizem tempo no trabalho.</textarea></div>
+          <div><label for="pDesafio">Desafio atual</label><textarea id="pDesafio">Não tem tempo de pesquisar em vários sites diferentes.</textarea></div>
         </div>
-        <div class="persona-preview" id="personaPreview">
-          <div class="avatar">👤</div>
+        <div class="persona-preview" id="personaPreview" aria-live="polite">
+          <div class="avatar" aria-hidden="true">👤</div>
           <div class="info">
             <span class="sub">PERSONA REVISITADA</span>
             <h5>Ana Souza</h5>
@@ -353,7 +369,7 @@
     </section>
   </div>
 
-  <div id="aba-seo" class="tab-content">
+  <div id="aba-seo" class="tab-content" role="tabpanel" aria-labelledby="tab-seo">
     <section class="card">
       <h2>🔍 SEO Avançado e Estratégias de Palavras-Chave</h2>
       <p>A apostila define SEO avançado como "uma evolução da otimização de mecanismos de busca tradicional, incorporando técnicas mais sofisticadas para melhorar a classificação nos resultados de pesquisa e atrair um tráfego qualificado."</p>
@@ -372,7 +388,7 @@
     </section>
   </div>
 
-  <div id="aba-engajamento" class="tab-content">
+  <div id="aba-engajamento" class="tab-content" role="tabpanel" aria-labelledby="tab-engajamento">
     <section class="card">
       <h2>❤️ Engajamento do Público</h2>
       <p>"É a medida da conexão emocional e interativa que um público tem com o conteúdo produzido por uma marca ou criador." A apostila lista cinco razões pelas quais o engajamento importa:</p>
@@ -385,16 +401,16 @@
       </div>
       <h3>As 10 estratégias para melhorar o engajamento (conforme apostila)</h3>
       <div class="estrategias-engaj">
-        <div class="engaj-card"><span class="icon">✨</span><h4>1. Conteúdo de Qualidade</h4><p>"Valioso, relevante e bem pesquisado é fundamental para atrair e manter a atenção."</p></div>
-        <div class="engaj-card"><span class="icon">📖</span><h4>2. Narrativa Atraente</h4><p>"Histórias envolventes e emocionais criam conexões emocionais com os usuários."</p></div>
-        <div class="engaj-card"><span class="icon">🎨</span><h4>3. Mídias Visuais</h4><p>"Imagens, vídeos, infográficos quebram a monotonia do conteúdo."</p></div>
-        <div class="engaj-card"><span class="icon">🎯</span><h4>4. Interatividade</h4><p>"Enquetes, quizzes e questionários envolvem o público ativamente."</p></div>
-        <div class="engaj-card"><span class="icon">💬</span><h4>5. Responder Comentários</h4><p>"Mostra que a marca valoriza a opinião e cria senso de comunidade."</p></div>
-        <div class="engaj-card"><span class="icon">🤝</span><h4>6. Conteúdo Gerado pelo Usuário</h4><p>"Incentivar usuários a criar e compartilhar aumenta pertencimento."</p></div>
-        <div class="engaj-card"><span class="icon">🎯</span><h4>7. Personalização</h4><p>"Entender preferências permite oferecer conteúdo mais relevante."</p></div>
-        <div class="engaj-card"><span class="icon">🏆</span><h4>8. Campanhas e Desafios</h4><p>"Concursos e desafios estimulam participação ativa do público."</p></div>
-        <div class="engaj-card"><span class="icon">🔑</span><h4>9. Acesso Antecipado</h4><p>"Conteúdo exclusivo motiva o público a se envolver mais."</p></div>
-        <div class="engaj-card"><span class="icon">🔄</span><h4>10. Consistência</h4><p>"Presença constante é fundamental para manter o interesse ao longo do tempo."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">✨</span><h4>1. Conteúdo de Qualidade</h4><p>"Valioso, relevante e bem pesquisado é fundamental para atrair e manter a atenção."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">📖</span><h4>2. Narrativa Atraente</h4><p>"Histórias envolventes e emocionais criam conexões emocionais com os usuários."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🎨</span><h4>3. Mídias Visuais</h4><p>"Imagens, vídeos, infográficos quebram a monotonia do conteúdo."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🎯</span><h4>4. Interatividade</h4><p>"Enquetes, quizzes e questionários envolvem o público ativamente."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">💬</span><h4>5. Responder Comentários</h4><p>"Mostra que a marca valoriza a opinião e cria senso de comunidade."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🤝</span><h4>6. Conteúdo Gerado pelo Usuário</h4><p>"Incentivar usuários a criar e compartilhar aumenta pertencimento."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🎯</span><h4>7. Personalização</h4><p>"Entender preferências permite oferecer conteúdo mais relevante."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🏆</span><h4>8. Campanhas e Desafios</h4><p>"Concursos e desafios estimulam participação ativa do público."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🔑</span><h4>9. Acesso Antecipado</h4><p>"Conteúdo exclusivo motiva o público a se envolver mais."</p></div>
+        <div class="engaj-card"><span class="icon" aria-hidden="true">🔄</span><h4>10. Consistência</h4><p>"Presença constante é fundamental para manter o interesse ao longo do tempo."</p></div>
       </div>
       <h2 style="margin-top:28px;">🎬 Produção de Conteúdo Multimídia Premium</h2>
       <p>A apostila descreve como "uma abordagem de alto nível na criação de material online, incorporando elementos visuais, auditivos e interativos para oferecer uma experiência excepcional."</p>
@@ -428,24 +444,24 @@
     </section>
   </div>
 
-  <div id="aba-metricas" class="tab-content">
+  <div id="aba-metricas" class="tab-content" role="tabpanel" aria-labelledby="tab-metricas">
     <section class="card">
       <h2>📊 Métricas Avançadas e Análise de Dados</h2>
       <p>"Envolve a coleta, interpretação e aplicação de informações quantitativas e qualitativas para avaliar o desempenho do conteúdo, compreender o comportamento do público e informar decisões estratégicas."</p>
       <div class="callout azul">💡 <strong>Cinco razões para medir</strong> (conforme apostila): tomada de decisões informadas, otimização de estratégia, identificação de tendências, avaliação da eficácia do conteúdo e personalização aprimorada.</div>
       <h3>As 9 métricas avançadas da apostila</h3>
-      <div class="metricas-tab">
-        <button type="button" class="met-btn active" data-met="m1">1. Conversão</button>
-        <button type="button" class="met-btn" data-met="m2">2. Funil</button>
-        <button type="button" class="met-btn" data-met="m3">3. Permanência</button>
-        <button type="button" class="met-btn" data-met="m4">4. Rejeição</button>
-        <button type="button" class="met-btn" data-met="m5">5. Compartilhamento</button>
-        <button type="button" class="met-btn" data-met="m6">6. Mobile</button>
-        <button type="button" class="met-btn" data-met="m7">7. Testes A/B</button>
-        <button type="button" class="met-btn" data-met="m8">8. Palavras-chave</button>
-        <button type="button" class="met-btn" data-met="m9">9. Canal</button>
+      <div class="metricas-tab" role="group" aria-label="Métricas avançadas">
+        <button type="button" class="met-btn active" data-met="m1" aria-pressed="true">1. Conversão</button>
+        <button type="button" class="met-btn" data-met="m2" aria-pressed="false">2. Funil</button>
+        <button type="button" class="met-btn" data-met="m3" aria-pressed="false">3. Permanência</button>
+        <button type="button" class="met-btn" data-met="m4" aria-pressed="false">4. Rejeição</button>
+        <button type="button" class="met-btn" data-met="m5" aria-pressed="false">5. Compartilhamento</button>
+        <button type="button" class="met-btn" data-met="m6" aria-pressed="false">6. Mobile</button>
+        <button type="button" class="met-btn" data-met="m7" aria-pressed="false">7. Testes A/B</button>
+        <button type="button" class="met-btn" data-met="m8" aria-pressed="false">8. Palavras-chave</button>
+        <button type="button" class="met-btn" data-met="m9" aria-pressed="false">9. Canal</button>
       </div>
-      <div class="met-content" id="metContent">
+      <div class="met-content" id="metContent" aria-live="polite">
         <h4>Taxa de Conversão por Segmento</h4>
         <p>"Analisar a taxa de conversão de diferentes segmentos do público para identificar oportunidades de melhoria."</p>
         <div class="exemplo">Exemplo: visitantes vindos do Instagram convertem 3,2%; do Google, 5,8%. O Google está performando melhor — talvez valha investir mais nele.</div>
@@ -462,33 +478,35 @@
     </section>
   </div>
 
-  <div id="aba-quiz" class="tab-content">
+  <div id="aba-quiz" class="tab-content" role="tabpanel" aria-labelledby="tab-quiz">
     <section class="card">
       <h2>📝 Quiz do Tema 01 — 15 questões</h2>
       <p>As <strong>10 primeiras questões</strong> vêm diretamente da <em>Atividade de Fixação</em> da apostila. As <strong>5 últimas</strong> são de aprofundamento com base no conteúdo do PDF. Cada uma tem feedback imediato.</p>
       <div class="card-aluno">
         <h4>👤 Identificação (para o relatório)</h4>
         <div class="campos">
-          <input type="text" id="nomeAluno" class="campo-input" placeholder="Seu nome completo">
-          <input type="text" id="turmaAluno" class="campo-input" placeholder="Turma">
+          <input type="text" id="nomeAluno" class="campo-input" placeholder="Seu nome completo" aria-label="Nome completo">
+          <input type="text" id="turmaAluno" class="campo-input" placeholder="Turma" aria-label="Turma">
         </div>
       </div>
       <div class="progresso-bar">
         <span>Respondidas: <strong id="txtProgresso">0 de 15</strong></span>
-        <div class="barra-fundo"><div class="barra-preench" id="barraProgresso"></div></div>
+        <div class="barra-fundo" role="progressbar" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0" id="barraAria">
+          <div class="barra-preench" id="barraProgresso"></div>
+        </div>
       </div>
       <div id="listaQuestoes"></div>
       <div class="botoes-centro">
-        <button type="button" class="btn verde" onclick="verResultado()">✅ Calcular resultado</button>
-        <button type="button" class="btn sec" onclick="limparQuiz()">🔄 Limpar</button>
+        <button type="button" class="btn verde" id="btnResultado">✅ Calcular resultado</button>
+        <button type="button" class="btn sec" id="btnLimpar">🔄 Limpar</button>
       </div>
-      <div class="resultado-box" id="caixaResultado">
+      <div class="resultado-box" id="caixaResultado" aria-live="polite">
         <h3>📊 Seu resultado</h3>
         <div class="nota" id="notaFinal">0 / 15</div>
         <div class="msg" id="mensagemFinal"></div>
         <div id="detalheResultado" class="detalhe"></div>
         <div class="botoes-centro" style="margin-top:14px;">
-          <button type="button" class="btn sec" onclick="copiarRelatorio()" id="btnCopiar">📋 Copiar relatório</button>
+          <button type="button" class="btn sec" id="btnCopiar">📋 Copiar relatório</button>
         </div>
       </div>
     </section>
@@ -497,7 +515,7 @@
   <div class="footer-card">
     <h4>📋 Envio oficial do relatório</h4>
     <a href="https://forms.gle/zbUB57A4FteUDsKSA" target="_blank" rel="noopener">
-      <span style="font-size:1.3rem;">📝</span>
+      <span style="font-size:1.3rem;" aria-hidden="true">📝</span>
       <div style="text-align:left;">
         <strong style="color:#fff;display:block;font-size:.86rem;">Enviar relatório do Tema 01</strong>
         <small style="color:var(--text-muted);font-size:.7rem;">Cole o resultado copiado acima no formulário</small>
@@ -506,364 +524,468 @@
   </div>
 </div>
 
+<!-- Modal customizado (substitui confirm) -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTexto">
+  <div class="modal-box">
+    <p id="modalTexto"></p>
+    <div class="modal-btns">
+      <button type="button" class="btn sec" id="modalCancelar">Cancelar</button>
+      <button type="button" class="btn verde" id="modalConfirmar">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <script>
-document.querySelectorAll('.tab-btn').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
-    document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.aba).classList.add('active');
-    window.scrollTo({top:0, behavior:'smooth'});
-  });
-});
+(function(){
+  'use strict';
 
-document.querySelectorAll('.era').forEach(function(era){
-  era.addEventListener('click', function(){ era.classList.toggle('aberta'); });
-});
-
-function atualizarPersona(){
-  var nome = document.getElementById('pNome').value.trim() || 'Persona';
-  var idade = document.getElementById('pIdade').value.trim() || '—';
-  var obj = document.getElementById('pObjetivo').value.trim() || '—';
-  var des = document.getElementById('pDesafio').value.trim() || '—';
-  document.getElementById('personaPreview').innerHTML =
-    '<div class="avatar">👤</div>' +
-    '<div class="info">' +
-      '<span class="sub">PERSONA REVISITADA</span>' +
-      '<h5>' + nome + '</h5>' +
-      '<p><strong>Contexto:</strong> ' + idade + '</p>' +
-      '<p><strong>Objetivo:</strong> ' + obj + '</p>' +
-      '<p><strong>Desafio:</strong> ' + des + '</p>' +
-    '</div>';
-}
-['pNome','pIdade','pObjetivo','pDesafio'].forEach(function(id){
-  var el = document.getElementById(id);
-  if(el) el.addEventListener('input', atualizarPersona);
-});
-
-var METRICAS = {
-  m1: { titulo:'Taxa de Conversão por Segmento', texto:'"Analisar a taxa de conversão de diferentes segmentos do público para identificar oportunidades de melhoria."', ex:'Exemplo: visitantes vindos do Instagram convertem 3,2%; do Google, 5,8%.' },
-  m2: { titulo:'Análise de Funil', texto:'"Acompanhar o comportamento dos usuários em diferentes estágios da jornada do consumidor para identificar pontos de otimização."', ex:'Exemplo: 1000 visitam → 300 colocam no carrinho → 60 compram. O gargalo está entre visitar e adicionar ao carrinho.' },
-  m3: { titulo:'Tempo de Permanência por Conteúdo', texto:'"Identificar quais tipos de conteúdo mantêm os usuários engajados por mais tempo e por que."', ex:'Exemplo: vídeos mantêm 3min em média; textos, 45s. Os vídeos estão prendendo mais atenção.' },
-  m4: { titulo:'Taxa de Rejeição por Página', texto:'"Analisar as páginas com altas taxas de rejeição para identificar problemas de usabilidade ou conteúdo pouco atrativo."', ex:'Exemplo: a página de contato tem 78% de rejeição — provavelmente algo está errado ali.' },
-  m5: { titulo:'Taxa de Compartilhamento Social', texto:'"Avaliar quais conteúdos são mais compartilhados nas redes sociais e entender os motivos por trás disso."', ex:'Exemplo: post sobre promoção foi 10x mais compartilhado que o post institucional.' },
-  m6: { titulo:'Engajamento em Dispositivos Móveis', texto:'"Analisar o comportamento dos usuários em dispositivos móveis e otimizar o conteúdo para essa audiência."', ex:'Exemplo: 82% dos acessos vêm do celular; a versão desktop precisa estar em segundo lugar.' },
-  m7: { titulo:'Testes A/B', texto:'"Realizar testes A/B para comparar diferentes elementos de conteúdo e determinar qual versão gera melhores resultados."', ex:'Exemplo: título A teve 4% de clique; título B, 7%. Adotamos o B.' },
-  m8: { titulo:'Análise de Palavras-chave', texto:'"Avaliar o desempenho de palavras-chave específicas em relação a classificação e tráfego."', ex:'Exemplo: "gestão de conteúdo web" trouxe 500 visitas; "cms headless", 80.' },
-  m9: { titulo:'Taxa de Conversão por Canal de Marketing', texto:'"Analisar a eficácia de diferentes canais de marketing em gerar conversões."', ex:'Exemplo: e-mail marketing converte 8%; tráfego pago, 3%. O e-mail está melhor.' }
-};
-document.querySelectorAll('.met-btn').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    document.querySelectorAll('.met-btn').forEach(function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
-    var m = METRICAS[btn.dataset.met];
-    document.getElementById('metContent').innerHTML =
-      '<h4>' + m.titulo + '</h4><p>' + m.texto + '</p><div class="exemplo">' + m.ex + '</div>';
-  });
-});
-
-var QUESTOES = [
-  { id:'q1', origem:'atividade oficial',
-    pergunta:'Como a gestão de conteúdo online evoluiu desde seus primórdios até os dias atuais?',
-    opcoes:[
-      {l:'A', t:'De sites estáticos e limitados a especialistas técnicos para plataformas acessíveis, interativas, personalizadas com IA.', ok:true},
-      {l:'B', t:'De redes sociais para sites estáticos.', ok:false},
-      {l:'C', t:'De IA para SEO básico.', ok:false},
-      {l:'D', t:'Não evoluiu — continua igual desde os anos 90.', ok:false}
-    ],
-    exp:'A apostila descreve essa jornada: dos sites estáticos (só texto e imagem, limitado a quem sabia programar) até a era atual de IA, personalização e experiência do usuário.'
-  },
-  { id:'q2', origem:'atividade oficial',
-    pergunta:'Quais são algumas das principais tendências que têm moldado a evolução da gestão de conteúdo web?',
-    opcoes:[
-      {l:'A', t:'Ascensão das redes sociais, motores de busca, SEO, dispositivos móveis, IA e automação.', ok:true},
-      {l:'B', t:'Apenas a queda das redes sociais.', ok:false},
-      {l:'C', t:'O fim dos sites institucionais.', ok:false},
-      {l:'D', t:'A volta dos sites estáticos.', ok:false}
-    ],
-    exp:'A apostila lista essas 5 frentes: redes sociais, motores de busca + SEO, dispositivos móveis, IA e automação, e personalização.'
-  },
-  { id:'q3', origem:'atividade oficial',
-    pergunta:'Quais foram os principais marcos na história da gestão de conteúdo online que impulsionaram sua evolução?',
-    opcoes:[
-      {l:'A', t:'Sites estáticos → CMS e redes sociais → motores de busca/SEO → dispositivos móveis → IA e personalização.', ok:true},
-      {l:'B', t:'Criação de e-mail → invenção do HTML → queda do Google.', ok:false},
-      {l:'C', t:'Apenas a criação do Facebook.', ok:false},
-      {l:'D', t:'Os marcos só aconteceram a partir de 2020.', ok:false}
-    ],
-    exp:'A apostila apresenta essa sequência como a linha mestra da evolução.'
-  },
-  { id:'q4', origem:'atividade oficial',
-    pergunta:'Como a ascensão das redes sociais influenciou a forma como as marcas gerenciam conteúdo?',
-    opcoes:[
-      {l:'A', t:'Marcas passaram a criar conteúdo altamente compartilhável e envolvente para atrair atenção e gerar engajamento.', ok:true},
-      {l:'B', t:'Marcas abandonaram seus sites.', ok:false},
-      {l:'C', t:'Marcas deixaram de se preocupar com conteúdo.', ok:false},
-      {l:'D', t:'Redes sociais não influenciaram o gerenciamento de conteúdo.', ok:false}
-    ],
-    exp:'A apostila cita textualmente esse foco em "conteúdo altamente compartilhável e envolvente".'
-  },
-  { id:'q5', origem:'atividade oficial',
-    pergunta:'Quais são os desafios que as marcas enfrentam na adaptação às mudanças do cenário digital?',
-    opcoes:[
-      {l:'A', t:'Saturação de conteúdo, mudanças algorítmicas, personalização precisa, diversificação de plataformas, evolução tecnológica e métricas complexas.', ok:true},
-      {l:'B', t:'Falta de eletricidade e problemas de conexão apenas.', ok:false},
-      {l:'C', t:'Ausência de usuários nas redes sociais.', ok:false},
-      {l:'D', t:'Nenhum — o ambiente digital é estável desde 2010.', ok:false}
-    ],
-    exp:'Esses são os 6 desafios avançados que a apostila lista no item "Desafios e Oportunidades Avançadas".'
-  },
-  { id:'q6', origem:'atividade oficial',
-    pergunta:'De que forma a crescente importância do conteúdo visual e multimídia afetou a gestão de conteúdo web?',
-    opcoes:[
-      {l:'A', t:'Aumentou exigência de qualidade visual, narrativa impactante, interatividade e uma produção mais sofisticada.', ok:true},
-      {l:'B', t:'Reduziu a produção de conteúdo.', ok:false},
-      {l:'C', t:'Eliminou a necessidade de texto.', ok:false},
-      {l:'D', t:'Não teve efeito prático.', ok:false}
-    ],
-    exp:'A apostila dedica uma seção inteira a "Produção de Conteúdo Multimídia Premium", destacando que o padrão de qualidade subiu.'
-  },
-  { id:'q7', origem:'atividade oficial',
-    pergunta:'Como a evolução dos algoritmos de motores de busca impactou a otimização de conteúdo?',
-    opcoes:[
-      {l:'A', t:'Exigiu SEO avançado: palavras-chave de cauda longa, palavras-chave LSI, intenção de busca, link building estratégico e otimização técnica.', ok:true},
-      {l:'B', t:'Acabou com a necessidade de SEO.', ok:false},
-      {l:'C', t:'Fez o SEO virar apenas contagem de palavras.', ok:false},
-      {l:'D', t:'Reduziu o tráfego orgânico a zero.', ok:false}
-    ],
-    exp:'A apostila detalha 7 pilares do SEO avançado, incluindo todos esses elementos além do monitoramento contínuo.'
-  },
-  { id:'q8', origem:'atividade oficial',
-    pergunta:'Quais são os benefícios da personalização e segmentação avançada na gestão de conteúdo?',
-    opcoes:[
-      {l:'A', t:'Experiências mais relevantes, maior engajamento, sentimentos de compreensão e valorização por parte do consumidor.', ok:true},
-      {l:'B', t:'Redução do engajamento e perda de valor percebido.', ok:false},
-      {l:'C', t:'Empobrecimento do conteúdo.', ok:false},
-      {l:'D', t:'Não há benefício comprovado.', ok:false}
-    ],
-    exp:'No item "Personalização e Engajamento Aprofundados", a apostila explica que "consumidores se sentem compreendidos e valorizados".'
-  },
-  { id:'q9', origem:'atividade oficial',
-    pergunta:'Como a mobilidade e o uso de dispositivos móveis influenciaram a evolução da gestão de conteúdo?',
-    opcoes:[
-      {l:'A', t:'Tornou design responsivo e otimização móvel imperativos, com apps e consumo de conteúdo em movimento.', ok:true},
-      {l:'B', t:'Reduziu a necessidade de design responsivo.', ok:false},
-      {l:'C', t:'Eliminou os sites desktop.', ok:false},
-      {l:'D', t:'Trouxe somente benefícios sem desafios.', ok:false}
-    ],
-    exp:'A apostila é direta: "design responsivo e otimização móvel se tornaram imperativos para proporcionar experiência coesa".'
-  },
-  { id:'q10', origem:'atividade oficial',
-    pergunta:'Como as estratégias de conteúdo voltadas para dispositivos de assistência (assistentes virtuais e dispositivos de voz) têm se desenvolvido?',
-    opcoes:[
-      {l:'A', t:'A apostila aponta que a ascensão das buscas por voz e a importância das pesquisas locais exigem adaptação contínua das estratégias e do conteúdo.', ok:true},
-      {l:'B', t:'Não há nada sobre esse tema na apostila.', ok:false},
-      {l:'C', t:'Apostila diz que assistentes de voz vão desaparecer.', ok:false},
-      {l:'D', t:'Assistentes de voz não têm impacto em gestão de conteúdo.', ok:false}
-    ],
-    exp:'No item "Mudanças no Cenário de Pesquisa", a apostila diz que a ascensão das buscas por voz exige "adaptação contínua das estratégias".'
-  },
-  { id:'q11', origem:'aprofundamento',
-    pergunta:'Segundo a apostila, qual é a diferença entre "público-alvo" e "persona"?',
-    opcoes:[
-      {l:'A', t:'São sinônimos.', ok:false},
-      {l:'B', t:'Público-alvo é o grupo demográfico amplo; persona é um personagem fictício que incorpora características, motivações e desafios desse público.', ok:true},
-      {l:'C', t:'Persona é o público real; público-alvo é a persona.', ok:false},
-      {l:'D', t:'Público-alvo se aplica só a grandes empresas.', ok:false}
-    ],
-    exp:'A apostila define exatamente assim: público-alvo é "grupo demográfico mais amplo"; persona são "personagens fictícios que incorporam características, motivações e desafios do público-alvo específico".'
-  },
-  { id:'q12', origem:'aprofundamento',
-    pergunta:'O que permite, segundo a apostila, adaptar a persona à "jornada do consumidor"?',
-    opcoes:[
-      {l:'A', t:'Criar conteúdo específico para cada estágio da jornada (conscientização, consideração, decisão etc.).', ok:true},
-      {l:'B', t:'Não muda nada — a persona é estática.', ok:false},
-      {l:'C', t:'Publicar sempre o mesmo conteúdo em todos os estágios.', ok:false},
-      {l:'D', t:'Focar apenas no estágio final de compra.', ok:false}
-    ],
-    exp:'A apostila afirma que "as personas revisitadas permitem que as marcas criem conteúdo específico para cada estágio da jornada".'
-  },
-  { id:'q13', origem:'aprofundamento',
-    pergunta:'Segundo a apostila, o que caracteriza o "link building estratégico" no SEO avançado?',
-    opcoes:[
-      {l:'A', t:'Buscar quantidade massiva de links.', ok:false},
-      {l:'B', t:'Criar relacionamentos estratégicos, parcerias e conteúdo altamente compartilhável que naturalmente atrai backlinks de qualidade.', ok:true},
-      {l:'C', t:'Comprar links em sites duvidosos.', ok:false},
-      {l:'D', t:'Não se importar com links.', ok:false}
-    ],
-    exp:'A apostila é explícita: em vez da quantidade, o foco está na qualidade e nas parcerias.'
-  },
-  { id:'q14', origem:'aprofundamento',
-    pergunta:'Quais são os 5 benefícios do engajamento do público, conforme a apostila?',
-    opcoes:[
-      {l:'A', t:'Construção de relacionamentos, visibilidade, feedback valioso, construção de comunidades e aumento da conversão.', ok:true},
-      {l:'B', t:'Apenas vendas.', ok:false},
-      {l:'C', t:'Apenas curtidas.', ok:false},
-      {l:'D', t:'Redução de custos operacionais.', ok:false}
-    ],
-    exp:'A apostila lista exatamente esses 5 benefícios na seção "Importância do Engajamento do Público".'
-  },
-  { id:'q15', origem:'aprofundamento',
-    pergunta:'A apostila cita 9 métricas avançadas. Qual das opções abaixo NÃO está nessa lista?',
-    opcoes:[
-      {l:'A', t:'Taxa de Conversão por Segmento', ok:false},
-      {l:'B', t:'Testes A/B', ok:false},
-      {l:'C', t:'Número de seguidores no Instagram', ok:true},
-      {l:'D', t:'Taxa de Rejeição por Página', ok:false}
-    ],
-    exp:'"Número de seguidores no Instagram" não está entre as 9 métricas citadas pela apostila.'
-  }
-];
-
-var respostasAluno = {};
-
-function renderizarQuestoes(){
-  var lista = document.getElementById('listaQuestoes');
-  lista.innerHTML = '';
-  QUESTOES.forEach(function(q, idx){
-    var div = document.createElement('div');
-    div.className = 'questao';
-    div.id = q.id;
-    var origemTag = '<span class="q-origem">' + q.origem + '</span>';
-    var opcoesHtml = '';
-    q.opcoes.forEach(function(op){
-      opcoesHtml += '<button type="button" class="q-op" data-q="' + q.id + '" data-l="' + op.l + '" data-ok="' + op.ok + '">' +
-                    '<strong>' + op.l + ')</strong><span>' + op.t + '</span></button>';
+  /* ---------- Utilitários ---------- */
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
-    div.innerHTML = '<div class="q-cabecalho"><span class="q-num">' + (idx + 1) + '</span><div><span>' + q.pergunta + '</span>' + origemTag + '</div></div>' +
-                    '<div class="q-opcoes">' + opcoesHtml + '</div>' +
-                    '<div class="q-feedback" id="fb-' + q.id + '"></div>';
-    lista.appendChild(div);
-  });
-
-  document.querySelectorAll('.q-op').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var qId = btn.dataset.q;
-      var q = QUESTOES.find(function(x){ return x.id === qId; });
-      var card = document.getElementById(qId);
-      if(card.classList.contains('respondida')) return;
-      var ehCerta = (btn.dataset.ok === 'true');
-      card.querySelectorAll('.q-op').forEach(function(b){
-        b.disabled = true;
-        if(b.dataset.ok === 'true') b.classList.add('certa');
-        else if(b === btn) b.classList.add('errada');
-      });
-      var fb = document.getElementById('fb-' + qId);
-      fb.classList.add('show');
-      if(ehCerta){
-        fb.innerHTML = '<strong>✅ Correto!</strong> ' + q.exp;
-      } else {
-        fb.classList.add('erro');
-        fb.innerHTML = '<strong>❌ Resposta correta é a letra <strong>' + q.opcoes.find(function(o){ return o.ok; }).l + '</strong>.</strong> ' + q.exp;
-      }
-      card.classList.add('respondida');
-      respostasAluno[qId] = { ok:ehCerta, letra:btn.dataset.l };
-      atualizarProgresso();
-    });
-  });
-}
-
-function atualizarProgresso(){
-  var respondidas = Object.keys(respostasAluno).length;
-  var total = QUESTOES.length;
-  var pct = Math.round((respondidas / total) * 100);
-  document.getElementById('txtProgresso').innerText = respondidas + ' de ' + total;
-  document.getElementById('barraProgresso').style.width = pct + '%';
-}
-
-function verResultado(){
-  var respondidas = Object.keys(respostasAluno).length;
-  if(respondidas < QUESTOES.length){
-    if(!confirm('Você ainda tem ' + (QUESTOES.length - respondidas) + ' questão(ões) sem responder. Ver resultado mesmo assim?')) return;
   }
-  var acertos = 0;
-  var detalhe = '';
-  QUESTOES.forEach(function(q, idx){
-    var resp = respostasAluno[q.id];
-    if(resp && resp.ok){
-      acertos++;
-      detalhe += '<div style="margin-bottom:6px;">✅ <strong>Q' + (idx + 1) + ':</strong> ' + resp.letra + ' (correta)</div>';
-    } else {
-      var correta = q.opcoes.find(function(o){ return o.ok; }).l;
-      var marcou = resp ? resp.letra : 'em branco';
-      detalhe += '<div style="margin-bottom:6px;">❌ <strong>Q' + (idx + 1) + ':</strong> marcou ' + marcou + ' (correta: ' + correta + ')</div>';
+
+  var modalResolve = null;
+  function abrirModal(msg){
+    document.getElementById('modalTexto').textContent = msg;
+    document.getElementById('modalOverlay').classList.add('show');
+    document.getElementById('modalConfirmar').focus();
+    return new Promise(function(resolve){ modalResolve = resolve; });
+  }
+  function fecharModal(v){
+    document.getElementById('modalOverlay').classList.remove('show');
+    if(modalResolve){ modalResolve(v); modalResolve = null; }
+  }
+  document.getElementById('modalConfirmar').addEventListener('click', function(){ fecharModal(true); });
+  document.getElementById('modalCancelar').addEventListener('click', function(){ fecharModal(false); });
+  document.getElementById('modalOverlay').addEventListener('click', function(e){
+    if(e.target === this) fecharModal(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.getElementById('modalOverlay').classList.contains('show')){
+      fecharModal(false);
     }
   });
-  var pct = Math.round((acertos / QUESTOES.length) * 100);
-  var msg = '';
-  if(pct >= 85) msg = '🏆 Excelente! Você dominou o tema. Pode avançar tranquilo para o Tema 02.';
-  else if(pct >= 65) msg = '👏 Bom rendimento! Reveja as questões erradas e siga em frente.';
-  else if(pct >= 40) msg = '📖 Vale a pena reler a aula antes de seguir. Alguns conceitos precisam reforço.';
-  else msg = '🔄 Vamos com calma. Releia cada aba deste material e refaça o quiz.';
-  document.getElementById('notaFinal').innerText = acertos + ' / ' + QUESTOES.length;
-  document.getElementById('mensagemFinal').innerText = msg + ' (Aproveitamento: ' + pct + '%)';
-  document.getElementById('detalheResultado').innerHTML = detalhe;
-  document.getElementById('caixaResultado').classList.add('show');
-  document.getElementById('caixaResultado').scrollIntoView({behavior:'smooth', block:'start'});
-}
 
-function limparQuiz(){
-  if(!confirm('Apagar todas as respostas e recomeçar?')) return;
-  respostasAluno = {};
-  document.querySelectorAll('.questao').forEach(function(q){
-    q.classList.remove('respondida');
-    q.querySelectorAll('.q-op').forEach(function(b){
-      b.disabled = false;
-      b.classList.remove('certa','errada');
+  /* ---------- Abas ---------- */
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){
+        b.classList.remove('active');
+        b.setAttribute('aria-selected','false');
+      });
+      document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.aba).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
     });
-    var fb = q.querySelector('.q-feedback');
-    fb.classList.remove('show','erro');
-    fb.innerHTML = '';
+    // Navegação por teclado entre abas
+    btn.addEventListener('keydown', function(e){
+      var idx = Array.prototype.indexOf.call(tabBtns, btn);
+      var next = null;
+      if(e.key === 'ArrowRight') next = tabBtns[(idx + 1) % tabBtns.length];
+      if(e.key === 'ArrowLeft')  next = tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length];
+      if(next){ e.preventDefault(); next.focus(); next.click(); }
+    });
   });
-  document.getElementById('caixaResultado').classList.remove('show');
-  atualizarProgresso();
-}
 
-function copiarRelatorio(){
-  var nome = document.getElementById('nomeAluno').value.trim() || 'Estudante';
-  var turma = document.getElementById('turmaAluno').value.trim() || 'Turma não informada';
-  var acertos = Object.values(respostasAluno).filter(function(r){ return r.ok; }).length;
-  var total = QUESTOES.length;
-  var pct = Math.round((acertos / total) * 100);
-  var linhas = '====================================================\n';
-  linhas += 'RELATÓRIO TEMA 01 — EVOLUÇÃO DA GESTÃO DE CONTEÚDO WEB\n';
-  linhas += 'Disciplina: Administração de Websites\n';
-  linhas += 'Aluno: ' + nome + '\n';
-  linhas += 'Turma: ' + turma + '\n';
-  linhas += 'Data: ' + new Date().toLocaleString('pt-BR') + '\n';
-  linhas += 'Nota: ' + acertos + ' / ' + total + ' (' + pct + '%)\n';
-  linhas += '----------------------------------------------------\n';
-  linhas += 'DETALHAMENTO:\n';
-  QUESTOES.forEach(function(q, idx){
-    var resp = respostasAluno[q.id];
-    var status = (resp && resp.ok) ? '[ACERTO]' : '[ERRO]';
-    var correta = q.opcoes.find(function(o){ return o.ok; }).l;
-    var marcou = resp ? resp.letra : 'branco';
-    linhas += 'Q' + (idx + 1) + ' [' + q.origem + ']: ' + status + ' (marcou: ' + marcou + ' | correta: ' + correta + ')\n';
-  });
-  linhas += '====================================================';
-  var btn = document.getElementById('btnCopiar');
-  if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(linhas).then(function(){
-      btn.innerText = '✅ Copiado!';
-      setTimeout(function(){ btn.innerText = '📋 Copiar relatório'; }, 1800);
+  /* ---------- Timeline ---------- */
+  document.querySelectorAll('.era').forEach(function(era){
+    function toggle(){
+      era.classList.toggle('aberta');
+      era.setAttribute('aria-expanded', era.classList.contains('aberta') ? 'true' : 'false');
+    }
+    era.addEventListener('click', toggle);
+    era.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
     });
-  } else {
+  });
+
+  /* ---------- Persona ---------- */
+  function atualizarPersona(){
+    var nome = escapeHtml(document.getElementById('pNome').value.trim() || 'Persona');
+    var idade = escapeHtml(document.getElementById('pIdade').value.trim() || '—');
+    var obj = escapeHtml(document.getElementById('pObjetivo').value.trim() || '—');
+    var des = escapeHtml(document.getElementById('pDesafio').value.trim() || '—');
+    document.getElementById('personaPreview').innerHTML =
+      '<div class="avatar" aria-hidden="true">👤</div>' +
+      '<div class="info">' +
+        '<span class="sub">PERSONA REVISITADA</span>' +
+        '<h5>' + nome + '</h5>' +
+        '<p><strong>Contexto:</strong> ' + idade + '</p>' +
+        '<p><strong>Objetivo:</strong> ' + obj + '</p>' +
+        '<p><strong>Desafio:</strong> ' + des + '</p>' +
+      '</div>';
+  }
+  ['pNome','pIdade','pObjetivo','pDesafio'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.addEventListener('input', atualizarPersona);
+  });
+
+  /* ---------- Métricas ---------- */
+  var METRICAS = {
+    m1: { titulo:'Taxa de Conversão por Segmento', texto:'"Analisar a taxa de conversão de diferentes segmentos do público para identificar oportunidades de melhoria."', ex:'Exemplo: visitantes vindos do Instagram convertem 3,2%; do Google, 5,8%.' },
+    m2: { titulo:'Análise de Funil', texto:'"Acompanhar o comportamento dos usuários em diferentes estágios da jornada do consumidor para identificar pontos de otimização."', ex:'Exemplo: 1000 visitam → 300 colocam no carrinho → 60 compram. O gargalo está entre visitar e adicionar ao carrinho.' },
+    m3: { titulo:'Tempo de Permanência por Conteúdo', texto:'"Identificar quais tipos de conteúdo mantêm os usuários engajados por mais tempo e por que."', ex:'Exemplo: vídeos mantêm 3min em média; textos, 45s. Os vídeos estão prendendo mais atenção.' },
+    m4: { titulo:'Taxa de Rejeição por Página', texto:'"Analisar as páginas com altas taxas de rejeição para identificar problemas de usabilidade ou conteúdo pouco atrativo."', ex:'Exemplo: a página de contato tem 78% de rejeição — provavelmente algo está errado ali.' },
+    m5: { titulo:'Taxa de Compartilhamento Social', texto:'"Avaliar quais conteúdos são mais compartilhados nas redes sociais e entender os motivos por trás disso."', ex:'Exemplo: post sobre promoção foi 10x mais compartilhado que o post institucional.' },
+    m6: { titulo:'Engajamento em Dispositivos Móveis', texto:'"Analisar o comportamento dos usuários em dispositivos móveis e otimizar o conteúdo para essa audiência."', ex:'Exemplo: 82% dos acessos vêm do celular; a versão desktop precisa estar em segundo lugar.' },
+    m7: { titulo:'Testes A/B', texto:'"Realizar testes A/B para comparar diferentes elementos de conteúdo e determinar qual versão gera melhores resultados."', ex:'Exemplo: título A teve 4% de clique; título B, 7%. Adotamos o B.' },
+    m8: { titulo:'Análise de Palavras-chave', texto:'"Avaliar o desempenho de palavras-chave específicas em relação a classificação e tráfego."', ex:'Exemplo: "gestão de conteúdo web" trouxe 500 visitas; "cms headless", 80.' },
+    m9: { titulo:'Taxa de Conversão por Canal de Marketing', texto:'"Analisar a eficácia de diferentes canais de marketing em gerar conversões."', ex:'Exemplo: e-mail marketing converte 8%; tráfego pago, 3%. O e-mail está melhor.' }
+  };
+  document.querySelectorAll('.met-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.met-btn').forEach(function(b){
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed','false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed','true');
+      var m = METRICAS[btn.dataset.met];
+      document.getElementById('metContent').innerHTML =
+        '<h4>' + escapeHtml(m.titulo) + '</h4><p>' + escapeHtml(m.texto) + '</p><div class="exemplo">' + escapeHtml(m.ex) + '</div>';
+    });
+  });
+
+  /* ---------- Quiz ---------- */
+  var QUESTOES = [
+    { id:'q1', origem:'atividade oficial',
+      pergunta:'Como a gestão de conteúdo online evoluiu desde seus primórdios até os dias atuais?',
+      opcoes:[
+        {l:'A', t:'De sites estáticos e limitados a especialistas técnicos para plataformas acessíveis, interativas, personalizadas com IA.', ok:true},
+        {l:'B', t:'De redes sociais para sites estáticos.', ok:false},
+        {l:'C', t:'De IA para SEO básico.', ok:false},
+        {l:'D', t:'Não evoluiu — continua igual desde os anos 90.', ok:false}
+      ],
+      exp:'A apostila descreve essa jornada: dos sites estáticos (só texto e imagem, limitado a quem sabia programar) até a era atual de IA, personalização e experiência do usuário.'
+    },
+    { id:'q2', origem:'atividade oficial',
+      pergunta:'Quais são algumas das principais tendências que têm moldado a evolução da gestão de conteúdo web?',
+      opcoes:[
+        {l:'A', t:'Ascensão das redes sociais, motores de busca, SEO, dispositivos móveis, IA e automação.', ok:true},
+        {l:'B', t:'Apenas a queda das redes sociais.', ok:false},
+        {l:'C', t:'O fim dos sites institucionais.', ok:false},
+        {l:'D', t:'A volta dos sites estáticos.', ok:false}
+      ],
+      exp:'A apostila lista essas 5 frentes: redes sociais, motores de busca + SEO, dispositivos móveis, IA e automação, e personalização.'
+    },
+    { id:'q3', origem:'atividade oficial',
+      pergunta:'Quais foram os principais marcos na história da gestão de conteúdo online que impulsionaram sua evolução?',
+      opcoes:[
+        {l:'A', t:'Sites estáticos → CMS e redes sociais → motores de busca/SEO → dispositivos móveis → IA e personalização.', ok:true},
+        {l:'B', t:'Criação de e-mail → invenção do HTML → queda do Google.', ok:false},
+        {l:'C', t:'Apenas a criação do Facebook.', ok:false},
+        {l:'D', t:'Os marcos só aconteceram a partir de 2020.', ok:false}
+      ],
+      exp:'A apostila apresenta essa sequência como a linha mestra da evolução.'
+    },
+    { id:'q4', origem:'atividade oficial',
+      pergunta:'Como a ascensão das redes sociais influenciou a forma como as marcas gerenciam conteúdo?',
+      opcoes:[
+        {l:'A', t:'Marcas passaram a criar conteúdo altamente compartilhável e envolvente para atrair atenção e gerar engajamento.', ok:true},
+        {l:'B', t:'Marcas abandonaram seus sites.', ok:false},
+        {l:'C', t:'Marcas deixaram de se preocupar com conteúdo.', ok:false},
+        {l:'D', t:'Redes sociais não influenciaram o gerenciamento de conteúdo.', ok:false}
+      ],
+      exp:'A apostila cita textualmente esse foco em "conteúdo altamente compartilhável e envolvente".'
+    },
+    { id:'q5', origem:'atividade oficial',
+      pergunta:'Quais são os desafios que as marcas enfrentam na adaptação às mudanças do cenário digital?',
+      opcoes:[
+        {l:'A', t:'Saturação de conteúdo, mudanças algorítmicas, personalização precisa, diversificação de plataformas, evolução tecnológica e métricas complexas.', ok:true},
+        {l:'B', t:'Falta de eletricidade e problemas de conexão apenas.', ok:false},
+        {l:'C', t:'Ausência de usuários nas redes sociais.', ok:false},
+        {l:'D', t:'Nenhum — o ambiente digital é estável desde 2010.', ok:false}
+      ],
+      exp:'Esses são os 6 desafios avançados que a apostila lista no item "Desafios e Oportunidades Avançadas".'
+    },
+    { id:'q6', origem:'atividade oficial',
+      pergunta:'De que forma a crescente importância do conteúdo visual e multimídia afetou a gestão de conteúdo web?',
+      opcoes:[
+        {l:'A', t:'Aumentou exigência de qualidade visual, narrativa impactante, interatividade e uma produção mais sofisticada.', ok:true},
+        {l:'B', t:'Reduziu a produção de conteúdo.', ok:false},
+        {l:'C', t:'Eliminou a necessidade de texto.', ok:false},
+        {l:'D', t:'Não teve efeito prático.', ok:false}
+      ],
+      exp:'A apostila dedica uma seção inteira a "Produção de Conteúdo Multimídia Premium", destacando que o padrão de qualidade subiu.'
+    },
+    { id:'q7', origem:'atividade oficial',
+      pergunta:'Como a evolução dos algoritmos de motores de busca impactou a otimização de conteúdo?',
+      opcoes:[
+        {l:'A', t:'Exigiu SEO avançado: palavras-chave de cauda longa, palavras-chave LSI, intenção de busca, link building estratégico e otimização técnica.', ok:true},
+        {l:'B', t:'Acabou com a necessidade de SEO.', ok:false},
+        {l:'C', t:'Fez o SEO virar apenas contagem de palavras.', ok:false},
+        {l:'D', t:'Reduziu o tráfego orgânico a zero.', ok:false}
+      ],
+      exp:'A apostila detalha 7 pilares do SEO avançado, incluindo todos esses elementos além do monitoramento contínuo.'
+    },
+    { id:'q8', origem:'atividade oficial',
+      pergunta:'Quais são os benefícios da personalização e segmentação avançada na gestão de conteúdo?',
+      opcoes:[
+        {l:'A', t:'Experiências mais relevantes, maior engajamento, sentimentos de compreensão e valorização por parte do consumidor.', ok:true},
+        {l:'B', t:'Redução do engajamento e perda de valor percebido.', ok:false},
+        {l:'C', t:'Empobrecimento do conteúdo.', ok:false},
+        {l:'D', t:'Não há benefício comprovado.', ok:false}
+      ],
+      exp:'No item "Personalização e Engajamento Aprofundados", a apostila explica que "consumidores se sentem compreendidos e valorizados".'
+    },
+    { id:'q9', origem:'atividade oficial',
+      pergunta:'Como a mobilidade e o uso de dispositivos móveis influenciaram a evolução da gestão de conteúdo?',
+      opcoes:[
+        {l:'A', t:'Tornou design responsivo e otimização móvel imperativos, com apps e consumo de conteúdo em movimento.', ok:true},
+        {l:'B', t:'Reduziu a necessidade de design responsivo.', ok:false},
+        {l:'C', t:'Eliminou os sites desktop.', ok:false},
+        {l:'D', t:'Trouxe somente benefícios sem desafios.', ok:false}
+      ],
+      exp:'A apostila é direta: "design responsivo e otimização móvel se tornaram imperativos para proporcionar experiência coesa".'
+    },
+    { id:'q10', origem:'atividade oficial',
+      pergunta:'Como as estratégias de conteúdo voltadas para dispositivos de assistência (assistentes virtuais e dispositivos de voz) têm se desenvolvido?',
+      opcoes:[
+        {l:'A', t:'A apostila aponta que a ascensão das buscas por voz e a importância das pesquisas locais exigem adaptação contínua das estratégias e do conteúdo.', ok:true},
+        {l:'B', t:'Não há nada sobre esse tema na apostila.', ok:false},
+        {l:'C', t:'Apostila diz que assistentes de voz vão desaparecer.', ok:false},
+        {l:'D', t:'Assistentes de voz não têm impacto em gestão de conteúdo.', ok:false}
+      ],
+      exp:'No item "Mudanças no Cenário de Pesquisa", a apostila diz que a ascensão das buscas por voz exige "adaptação contínua das estratégias".'
+    },
+    { id:'q11', origem:'aprofundamento',
+      pergunta:'Segundo a apostila, qual é a diferença entre "público-alvo" e "persona"?',
+      opcoes:[
+        {l:'A', t:'São sinônimos.', ok:false},
+        {l:'B', t:'Público-alvo é o grupo demográfico amplo; persona é um personagem fictício que incorpora características, motivações e desafios desse público.', ok:true},
+        {l:'C', t:'Persona é o público real; público-alvo é a persona.', ok:false},
+        {l:'D', t:'Público-alvo se aplica só a grandes empresas.', ok:false}
+      ],
+      exp:'A apostila define exatamente assim: público-alvo é "grupo demográfico mais amplo"; persona são "personagens fictícios que incorporam características, motivações e desafios do público-alvo específico".'
+    },
+    { id:'q12', origem:'aprofundamento',
+      pergunta:'O que permite, segundo a apostila, adaptar a persona à "jornada do consumidor"?',
+      opcoes:[
+        {l:'A', t:'Criar conteúdo específico para cada estágio da jornada (conscientização, consideração, decisão etc.).', ok:true},
+        {l:'B', t:'Não muda nada — a persona é estática.', ok:false},
+        {l:'C', t:'Publicar sempre o mesmo conteúdo em todos os estágios.', ok:false},
+        {l:'D', t:'Focar apenas no estágio final de compra.', ok:false}
+      ],
+      exp:'A apostila afirma que "as personas revisitadas permitem que as marcas criem conteúdo específico para cada estágio da jornada".'
+    },
+    { id:'q13', origem:'aprofundamento',
+      pergunta:'Segundo a apostila, o que caracteriza o "link building estratégico" no SEO avançado?',
+      opcoes:[
+        {l:'A', t:'Buscar quantidade massiva de links.', ok:false},
+        {l:'B', t:'Criar relacionamentos estratégicos, parcerias e conteúdo altamente compartilhável que naturalmente atrai backlinks de qualidade.', ok:true},
+        {l:'C', t:'Comprar links em sites duvidosos.', ok:false},
+        {l:'D', t:'Não se importar com links.', ok:false}
+      ],
+      exp:'A apostila é explícita: em vez da quantidade, o foco está na qualidade e nas parcerias.'
+    },
+    { id:'q14', origem:'aprofundamento',
+      pergunta:'Quais são os 5 benefícios do engajamento do público, conforme a apostila?',
+      opcoes:[
+        {l:'A', t:'Construção de relacionamentos, visibilidade, feedback valioso, construção de comunidades e aumento da conversão.', ok:true},
+        {l:'B', t:'Apenas vendas.', ok:false},
+        {l:'C', t:'Apenas curtidas.', ok:false},
+        {l:'D', t:'Redução de custos operacionais.', ok:false}
+      ],
+      exp:'A apostila lista exatamente esses 5 benefícios na seção "Importância do Engajamento do Público".'
+    },
+    { id:'q15', origem:'aprofundamento',
+      pergunta:'A apostila cita 9 métricas avançadas. Qual das opções abaixo NÃO está nessa lista?',
+      opcoes:[
+        {l:'A', t:'Taxa de Conversão por Segmento', ok:false},
+        {l:'B', t:'Testes A/B', ok:false},
+        {l:'C', t:'Número de seguidores no Instagram', ok:true},
+        {l:'D', t:'Taxa de Rejeição por Página', ok:false}
+      ],
+      exp:'"Número de seguidores no Instagram" não está entre as 9 métricas citadas pela apostila.'
+    }
+  ];
+
+  var respostasAluno = {};
+
+  function renderizarQuestoes(){
+    var lista = document.getElementById('listaQuestoes');
+    lista.innerHTML = '';
+    QUESTOES.forEach(function(q, idx){
+      var div = document.createElement('div');
+      div.className = 'questao';
+      div.id = q.id;
+      var opcoesHtml = '';
+      q.opcoes.forEach(function(op){
+        opcoesHtml += '<button type="button" class="q-op" data-q="' + q.id + '" data-l="' + op.l + '" data-ok="' + op.ok + '">' +
+                      '<strong>' + op.l + ')</strong><span>' + escapeHtml(op.t) + '</span></button>';
+      });
+      div.innerHTML = '<div class="q-cabecalho"><span class="q-num">' + (idx + 1) + '</span><div><span>' + escapeHtml(q.pergunta) + '</span><span class="q-origem">' + escapeHtml(q.origem) + '</span></div></div>' +
+                      '<div class="q-opcoes" role="group" aria-label="Alternativas da questão ' + (idx + 1) + '">' + opcoesHtml + '</div>' +
+                      '<div class="q-feedback" id="fb-' + q.id + '" aria-live="polite"></div>';
+      lista.appendChild(div);
+    });
+
+    document.querySelectorAll('.q-op').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var qId = btn.dataset.q;
+        var q = QUESTOES.find(function(x){ return x.id === qId; });
+        var card = document.getElementById(qId);
+        if(card.classList.contains('respondida')) return;
+        var ehCerta = (btn.dataset.ok === 'true');
+        card.querySelectorAll('.q-op').forEach(function(b){
+          b.disabled = true;
+          if(b.dataset.ok === 'true') b.classList.add('certa');
+          else if(b === btn) b.classList.add('errada');
+        });
+        var fb = document.getElementById('fb-' + qId);
+        fb.classList.add('show');
+        if(ehCerta){
+          fb.innerHTML = '<strong>✅ Correto!</strong> ' + escapeHtml(q.exp);
+        } else {
+          fb.classList.add('erro');
+          var corretaLetra = q.opcoes.find(function(o){ return o.ok; }).l;
+          fb.innerHTML = '<strong>❌ Resposta correta é a letra ' + corretaLetra + '.</strong> ' + escapeHtml(q.exp);
+        }
+        card.classList.add('respondida');
+        respostasAluno[qId] = { ok:ehCerta, letra:btn.dataset.l };
+        atualizarProgresso();
+      });
+    });
+  }
+
+  function atualizarProgresso(){
+    var respondidas = Object.keys(respostasAluno).length;
+    var total = QUESTOES.length;
+    var pct = Math.round((respondidas / total) * 100);
+    document.getElementById('txtProgresso').innerText = respondidas + ' de ' + total;
+    document.getElementById('barraProgresso').style.width = pct + '%';
+    var barraAria = document.getElementById('barraAria');
+    if(barraAria) barraAria.setAttribute('aria-valuenow', String(respondidas));
+  }
+
+  function verResultado(){
+    var respondidas = Object.keys(respostasAluno).length;
+    var faltam = QUESTOES.length - respondidas;
+    var continuar = Promise.resolve(true);
+    if(faltam > 0){
+      continuar = abrirModal('Você ainda tem ' + faltam + ' questão(ões) sem responder. Ver resultado mesmo assim?');
+    }
+    continuar.then(function(ok){
+      if(!ok) return;
+      var acertos = 0;
+      var detalhe = '';
+      QUESTOES.forEach(function(q, idx){
+        var resp = respostasAluno[q.id];
+        if(resp && resp.ok){
+          acertos++;
+          detalhe += '<div style="margin-bottom:6px;">✅ <strong>Q' + (idx + 1) + ':</strong> ' + escapeHtml(resp.letra) + ' (correta)</div>';
+        } else {
+          var correta = q.opcoes.find(function(o){ return o.ok; }).l;
+          var marcou = resp ? resp.letra : 'em branco';
+          detalhe += '<div style="margin-bottom:6px;">❌ <strong>Q' + (idx + 1) + ':</strong> marcou ' + escapeHtml(marcou) + ' (correta: ' + correta + ')</div>';
+        }
+      });
+      var pct = Math.round((acertos / QUESTOES.length) * 100);
+      var msg = '';
+      if(pct >= 85) msg = '🏆 Excelente! Você dominou o tema. Pode avançar tranquilo para o Tema 02.';
+      else if(pct >= 65) msg = '👏 Bom rendimento! Reveja as questões erradas e siga em frente.';
+      else if(pct >= 40) msg = '📖 Vale a pena reler a aula antes de seguir. Alguns conceitos precisam reforço.';
+      else msg = '🔄 Vamos com calma. Releia cada aba deste material e refaça o quiz.';
+      document.getElementById('notaFinal').innerText = acertos + ' / ' + QUESTOES.length;
+      document.getElementById('mensagemFinal').innerText = msg + ' (Aproveitamento: ' + pct + '%)';
+      document.getElementById('detalheResultado').innerHTML = detalhe;
+      document.getElementById('caixaResultado').classList.add('show');
+      document.getElementById('caixaResultado').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
+  function limparQuiz(){
+    abrirModal('Apagar todas as respostas e recomeçar?').then(function(ok){
+      if(!ok) return;
+      respostasAluno = {};
+      document.querySelectorAll('.questao').forEach(function(q){
+        q.classList.remove('respondida');
+        q.querySelectorAll('.q-op').forEach(function(b){
+          b.disabled = false;
+          b.classList.remove('certa','errada');
+        });
+        var fb = q.querySelector('.q-feedback');
+        fb.classList.remove('show','erro');
+        fb.innerHTML = '';
+      });
+      document.getElementById('caixaResultado').classList.remove('show');
+      atualizarProgresso();
+    });
+  }
+
+  function copiarRelatorio(){
+    var nome = document.getElementById('nomeAluno').value.trim() || 'Estudante';
+    var turma = document.getElementById('turmaAluno').value.trim() || 'Turma não informada';
+    var acertos = Object.keys(respostasAluno).filter(function(k){ return respostasAluno[k].ok; }).length;
+    var total = QUESTOES.length;
+    var pct = Math.round((acertos / total) * 100);
+    var linhas = '====================================================\n';
+    linhas += 'RELATÓRIO TEMA 01 — EVOLUÇÃO DA GESTÃO DE CONTEÚDO WEB\n';
+    linhas += 'Disciplina: Administração de Websites\n';
+    linhas += 'Aluno: ' + nome + '\n';
+    linhas += 'Turma: ' + turma + '\n';
+    linhas += 'Data: ' + new Date().toLocaleString('pt-BR') + '\n';
+    linhas += 'Nota: ' + acertos + ' / ' + total + ' (' + pct + '%)\n';
+    linhas += '----------------------------------------------------\n';
+    linhas += 'DETALHAMENTO:\n';
+    QUESTOES.forEach(function(q, idx){
+      var resp = respostasAluno[q.id];
+      var status = (resp && resp.ok) ? '[ACERTO]' : '[ERRO]';
+      var correta = q.opcoes.find(function(o){ return o.ok; }).l;
+      var marcou = resp ? resp.letra : 'branco';
+      linhas += 'Q' + (idx + 1) + ' [' + q.origem + ']: ' + status + ' (marcou: ' + marcou + ' | correta: ' + correta + ')\n';
+    });
+    linhas += '====================================================';
+
+    var btn = document.getElementById('btnCopiar');
+    var original = '📋 Copiar relatório';
+    function sucesso(){ btn.innerText = '✅ Copiado!'; setTimeout(function(){ btn.innerText = original; }, 1800); }
+
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(linhas).then(sucesso).catch(function(){
+        copiarFallback(linhas, sucesso);
+      });
+    } else {
+      copiarFallback(linhas, sucesso);
+    }
+  }
+
+  function copiarFallback(texto, onOk){
     var ta = document.createElement('textarea');
-    ta.value = linhas;
+    ta.value = texto;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
     document.body.appendChild(ta);
+    ta.focus();
     ta.select();
-    try { document.execCommand('copy'); btn.innerText = '✅ Copiado!';
-      setTimeout(function(){ btn.innerText = '📋 Copiar relatório'; }, 1800); } catch(e){}
+    try { document.execCommand('copy'); onOk(); } catch(e){}
     document.body.removeChild(ta);
   }
-}
 
-window.addEventListener('DOMContentLoaded', function(){
-  renderizarQuestoes();
-  atualizarProgresso();
-  atualizarPersona();
-});
+  /* ---------- Bind dos botões ---------- */
+  document.getElementById('btnResultado').addEventListener('click', verResultado);
+  document.getElementById('btnLimpar').addEventListener('click', limparQuiz);
+  document.getElementById('btnCopiar').addEventListener('click', copiarRelatorio);
+
+  /* ---------- Init ---------- */
+  window.addEventListener('DOMContentLoaded', function(){
+    renderizarQuestoes();
+    atualizarProgresso();
+    atualizarPersona();
+  });
+
+  // Fallback caso DOMContentLoaded já tenha disparado
+  if(document.readyState === 'complete' || document.readyState === 'interactive'){
+    renderizarQuestoes();
+    atualizarProgresso();
+    atualizarPersona();
+  }
+})();
 </script>
 </body>
 </html>

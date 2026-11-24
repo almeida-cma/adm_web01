@@ -34,7 +34,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
 .progress-track{height:10px;background:#090e17;border-radius:20px;overflow:hidden;border:1px solid var(--border);}
 .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--purple),var(--pink));transition:width 0.3s ease;}
 .nav-dots{display:flex;gap:6px;overflow-x:auto;padding:8px 2px 14px;margin-bottom:18px;scrollbar-width:thin;}
-.nav-dot{width:30px;height:30px;border-radius:50%;background:#1e293b;border:2px solid var(--border);color:#cbd5e1;font-size:0.72rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:var(--trans);}
+.nav-dot{width:30px;height:30px;border-radius:50%;background:#1e293b;border:2px solid var(--border);color:#cbd5e1;font-size:0.72rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:var(--trans);font-family:inherit;}
 .nav-dot:hover{border-color:var(--primary);color:#fff;}
 .nav-dot.active{background:var(--primary-dark);color:#fff;border-color:#7dd3fc;box-shadow:0 0 12px rgba(56,189,248,0.6);}
 .nav-dot.done-ok{background:var(--ok-bg);border-color:var(--ok);color:#a7f3d0;}
@@ -62,13 +62,16 @@ code{background:#090e17;color:#38bdf8;padding:3px 8px;border-radius:6px;font-fam
 .sortable-list{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
 .sort-item{background:var(--surface-card);border:1px solid var(--border);padding:12px 16px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:0.92rem;font-weight:700;color:#fff;gap:10px;}
 .sort-actions{display:flex;gap:6px;}
-.btn-sort{background:#0f172a;border:1px solid var(--border);color:#f8fafc;width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:0.85rem;font-weight:bold;}
-.btn-sort:hover{color:var(--primary);border-color:var(--primary);}
+.btn-sort{background:#0f172a;border:1px solid var(--border);color:#f8fafc;width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:0.85rem;font-weight:bold;font-family:inherit;}
+.btn-sort:hover:not(:disabled){color:var(--primary);border-color:var(--primary);}
+.btn-sort:disabled{opacity:0.4;cursor:not-allowed;}
 .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
 .match-col{display:flex;flex-direction:column;gap:8px;}
 .match-btn{background:var(--surface-card);border:2px solid var(--border);color:var(--text);padding:12px 14px;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;transition:var(--trans);font-family:inherit;min-height:52px;}
 .match-btn.selected{border-color:var(--accent);background:rgba(245,158,11,0.2);}
 .match-btn.matched{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-text);cursor:default;}
+.match-btn.temp-wrong{border-color:var(--no);background:var(--no-bg);color:var(--no-text);animation:shake 0.4s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
 .buckets-container{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
 .bucket{background:#0b1120;border:2px dashed #475569;border-radius:10px;padding:16px;min-height:130px;cursor:pointer;}
 .bucket:hover{border-color:var(--primary);background:#0f182c;}
@@ -79,8 +82,9 @@ code{background:#090e17;color:#38bdf8;padding:3px 8px;border-radius:6px;font-fam
 .chip-item.active-chip{border-color:var(--accent);background:var(--accent-orange);color:#fff;box-shadow:0 0 10px rgba(234,88,12,0.4);}
 .code-error-box{background:#060911;border:2px solid var(--border);border-radius:10px;padding:10px 0;margin:14px 0;font-family:'Courier New',monospace;font-size:0.9rem;}
 .code-line{padding:8px 18px;cursor:pointer;display:flex;gap:14px;transition:var(--trans);color:#f8fafc;align-items:flex-start;}
-.code-line:hover{background:#162032;}
+.code-line:hover:not(.locked){background:#162032;}
 .code-line.selected-err{background:var(--no-bg);border-left:5px solid var(--no);color:#fee2e2;}
+.code-line.locked{cursor:default;}
 .line-no{color:#64748b;user-select:none;width:20px;text-align:right;flex-shrink:0;}
 .evolution-hotspot{background:#070c18;border:2px solid var(--border);border-radius:12px;padding:20px;margin:16px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .evo-card{background:#111827;border:2px solid #1f2937;border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:var(--trans);}
@@ -95,6 +99,7 @@ code{background:#090e17;color:#38bdf8;padding:3px 8px;border-radius:6px;font-fam
 .feedback-box.show{display:block;animation:fadeIn 0.2s ease-out;}
 .feedback-box.ok{background:var(--ok-bg);border-left:5px solid var(--ok);color:var(--ok-text);}
 .feedback-box.no{background:var(--no-bg);border-left:5px solid var(--no);color:var(--no-text);}
+.feedback-box.warn{background:rgba(245,158,11,0.15);border-left:5px solid var(--accent);color:#fef3c7;}
 .q-footer{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:18px;border-top:1px solid var(--border);gap:10px;flex-wrap:wrap;}
 .btn-action{background:linear-gradient(135deg,var(--primary-dark),#2563eb);color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:0.9rem;font-weight:800;cursor:pointer;transition:var(--trans);display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
 .btn-action:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 18px rgba(2,132,199,0.5);}
@@ -103,6 +108,7 @@ code{background:#090e17;color:#38bdf8;padding:3px 8px;border-radius:6px;font-fam
 .btn-sec:hover{color:#fff;border-color:var(--primary);}
 select.gap-select{background:#0d1524;color:#38bdf8;border:2px solid #38bdf8;padding:5px 10px;border-radius:6px;font-family:monospace;font-weight:bold;font-size:0.95rem;}
 select.gap-select option{background:#0d1524;color:#f8fafc;}
+select.gap-select:disabled{opacity:0.7;cursor:not-allowed;}
 .report-card{display:none;background:var(--surface);border:2px solid var(--primary-dark);border-radius:var(--radius);padding:34px 28px;text-align:center;}
 .report-card.show{display:block;animation:fadeIn 0.3s ease;}
 .report-score{font-size:3.5rem;font-weight:900;color:var(--primary);margin:10px 0;}
@@ -112,6 +118,10 @@ select.gap-select option{background:#0d1524;color:#f8fafc;}
   .hud-top{flex-direction:column;align-items:flex-start;}
   .question-card{padding:20px 14px;}
   .evolution-hotspot{grid-template-columns:repeat(2,1fr);}
+  .hud-header{position:static;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
 }
 </style>
 </head>
@@ -133,600 +143,885 @@ select.gap-select option{background:#0d1524;color:#f8fafc;}
         <span>Progresso Geral</span>
         <span id="txt-prog">Questão 1 de 20</span>
       </div>
-      <div class="progress-track"><div class="progress-fill" id="bar-prog"></div></div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" id="bar-aria">
+        <div class="progress-fill" id="bar-prog"></div>
+      </div>
     </div>
   </header>
 
-  <nav class="nav-dots" id="dots-container" aria-label="Navegador de Questões"></nav>
+  <nav class="nav-dots" id="dots-container" aria-label="Navegador de Questões" role="tablist"></nav>
 
   <main id="questions-viewport"></main>
 
-  <section class="report-card" id="final-report">
+  <section class="report-card" id="final-report" aria-live="polite">
     <h2>🏆 Desafio Concluído!</h2>
     <p style="color:var(--text-muted); margin-top:4px;">Confira seu desempenho nas 20 questões do Tema 01</p>
     <div class="report-score" id="final-score-txt">0 / 20</div>
     <p id="final-feedback-badge" style="font-size:1.15rem; font-weight:800; margin-bottom:14px;"></p>
-    <textarea class="report-textarea" id="report-copy-box" readonly></textarea>
+    <textarea class="report-textarea" id="report-copy-box" readonly aria-label="Relatório do desafio"></textarea>
     <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
       <button type="button" class="btn-action" id="btn-copy-rep">📋 Copiar Resumo</button>
-      <button type="button" class="btn-action btn-sec" onclick="location.reload()">🔄 Reiniciar Desafio</button>
+      <button type="button" class="btn-action btn-sec" id="btn-revisar">🔍 Revisar Questões</button>
+      <button type="button" class="btn-action btn-sec" id="btn-reiniciar">🔄 Reiniciar Desafio</button>
     </div>
   </section>
 </div>
 
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTexto" style="position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(2px);">
+  <div style="background:var(--surface);border:2px solid var(--primary);border-radius:14px;padding:24px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.6);">
+    <p id="modalTexto" style="color:var(--text);font-size:.95rem;margin-bottom:18px;line-height:1.6;"></p>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button type="button" class="btn-action btn-sec" id="modalCancelar">Cancelar</button>
+      <button type="button" class="btn-action" id="modalConfirmar">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <script>
-var DATABASE = [
-  { id:1, type:"choice", badge:"1. Múltipla Escolha • Evolução",
-    title:"Segundo a apostila, como a gestão de conteúdo era caracterizada no início da era da internet?",
-    options:[
-      { t:"Pela personalização avançada e interatividade em tempo real.", ok:false },
-      { t:"Pela simplicidade dos sites estáticos, com foco em texto e imagens básicas.", ok:true },
-      { t:"Pelo uso intenso de inteligência artificial.", ok:false },
-      { t:"Por algoritmos de busca avançados.", ok:false }
-    ],
-    exp:"A apostila diz: 'a gestão de conteúdo era caracterizada pela simplicidade dos sites estáticos, onde o foco estava em transmitir informações básicas por meio de texto e imagens'."
-  },
-  { id:2, type:"tf", badge:"2. Verdadeiro ou Falso • CMS",
-    title:"Segundo a apostila, os CMS tornaram a gestão de conteúdo acessível a uma variedade maior de pessoas, impulsionando blogs, fóruns e comunidades.",
-    ok:true,
-    exp:"Verdadeiro! A apostila afirma que 'permitiu que uma variedade maior de pessoas criasse e compartilhasse conteúdo, impulsionando a criação de blogs, fóruns e comunidades online'."
-  },
-  { id:3, type:"multi", badge:"3. Múltiplas Respostas • Desafios",
-    title:"Quais dos itens abaixo a apostila lista como DESAFIOS AVANÇADOS na gestão de conteúdo web? (Selecione todos)",
-    options:[
-      { t:"Saturação de conteúdo", ok:true },
-      { t:"Mudanças algorítmicas", ok:true },
-      { t:"Falta de eletricidade nos servidores", ok:false },
-      { t:"Métricas de desempenho complexas", ok:true }
-    ],
-    exp:"A apostila lista 6 desafios: saturação de conteúdo, mudanças algorítmicas, personalização demanda precisão, diversificação de plataformas, evolução tecnológica e métricas complexas."
-  },
-  { id:4, type:"typed", badge:"4. Resposta Digitada • Personas",
-    title:"Segundo a apostila, <strong>público-alvo</strong> representa um grupo demográfico amplo. E <strong>personas</strong> são o quê? Digite a palavra-chave que caracteriza a persona.",
-    sub:"Dica: a apostila usa uma expressão específica. Digite apenas a palavra (ex: personagens):",
-    answer:"personagens",
-    exp:"A apostila diz que persona são 'personagens fictícios que incorporam características, motivações e desafios do público-alvo específico'."
-  },
-  { id:5, type:"number", badge:"5. Resposta Numérica • Métricas",
-    title:"Segundo a apostila, quantas MÉTRICAS AVANÇADAS são listadas na seção de Métricas e Análise de Dados?",
-    sub:"Informe apenas o número:",
-    answer:9,
-    exp:"São 9: Taxa de Conversão por Segmento, Análise de Funil, Tempo de Permanência por Conteúdo, Taxa de Rejeição por Página, Taxa de Compartilhamento Social, Engajamento em Dispositivos Móveis, Testes A/B, Análise de Palavras-Chave e Taxa de Conversão por Canal de Marketing."
-  },
-  { id:6, type:"sort", badge:"6. Ordenação • Evolução Histórica",
-    title:"Ordene os 4 grandes marcos da evolução da gestão de conteúdo web, conforme a apostila (do mais antigo ao mais recente):",
-    items:[
-      "Sites estáticos (simplicidade, texto e imagem)",
-      "CMS + redes sociais (democratização da publicação)",
-      "Motores de busca e SEO + dispositivos móveis (responsividade)",
-      "IA, personalização e redes sociais dominantes (era atual)"
-    ],
-    correctOrder:[0,1,2,3],
-    exp:"Essa é a sequência narrativa da apostila: estático → CMS/redes sociais → SEO + mobile → IA e personalização."
-  },
-  { id:7, type:"match", badge:"7. Associação • Pilares do SEO",
-    title:"Associe cada termo de SEO avançado à sua definição, conforme a apostila:",
-    pairs:[
-      { left:"Cauda longa", right:"Palavras-chave específicas e mais direcionadas" },
-      { left:"LSI", right:"Variações semânticas que reforçam o tema" },
-      { left:"Intenção de busca", right:"O que o usuário quer ao digitar a consulta" }
-    ],
-    exp:"A apostila lista cauda longa (mais específicas), LSI (conteúdo natural) e intenção de busca (respostas relevantes e completas)."
-  },
-  { id:8, type:"buckets", badge:"8. Classificação • Desafios × Oportunidades",
-    title:"Classifique cada item como DESAFIO ou OPORTUNIDADE avançada, conforme a apostila:",
-    buckets:["Desafio","Oportunidade"],
-    items:[
-      { text:"Saturação de conteúdo", b:0 },
-      { text:"Experiência do usuário aprimorada", b:1 },
-      { text:"Mudanças algorítmicas", b:0 },
-      { text:"Expansão global", b:1 }
-    ],
-    exp:"Saturação e mudanças algorítmicas são desafios. Experiência aprimorada e expansão global são oportunidades."
-  },
-  { id:9, type:"gap", badge:"9. Completar Lacunas • SEO",
-    title:"Complete o trecho conforme a apostila descreve o uso de palavras-chave LSI:",
-    snippet:'O uso de palavras-chave <b>LSI</b> ajuda a criar conteúdo mais natural e <b>_____1_____</b>.',
-    options:["relacionado","complexo","longo","técnico"],
-    correct:"relacionado",
-    exp:"A apostila diz: 'o uso de palavras-chave LSI (Indexação Semântica Latente) ajuda a criar conteúdo mais natural e relacionado'."
-  },
-  { id:10, type:"hotspot", badge:"10. Hotspot • Era Atual",
-    title:"Clique no cartão que representa a era em que as REDES SOCIAIS emergiram como plataformas poderosas de compartilhamento de conteúdo, segundo a apostila:",
-    target:"era4",
-    exp:"A apostila diz: 'Nos últimos anos, as redes sociais emergiram como poderosas plataformas de compartilhamento de conteúdo' — essa é a era atual (IA + personalização + redes sociais)."
-  },
-  { id:11, type:"errorcode", badge:"11. Caça ao Erro • Conceito",
-    title:"Clique na linha que contém uma afirmação ERRADA em relação ao que a apostila diz:",
-    lines:[
-      "A evolução do CMS permitiu que mais pessoas publicassem conteúdo.",
-      "Sites estáticos já tinham personalização avançada e IA integrada.",
-      "SEO avançado envolve cauda longa, LSI e intenção de busca.",
-      "Métricas avançadas ajudam na tomada de decisões informadas."
-    ],
-    errLine:1,
-    exp:"A apostila diz exatamente o contrário: sites estáticos eram simples, sem personalização nem interação. IA e personalização só vieram na era atual."
-  },
-  { id:12, type:"choice", badge:"12. Múltipla Escolha • Multimídia",
-    title:"Segundo a apostila, qual é a vantagem da produção de conteúdo multimídia premium que se refere a abordar vários sentidos?",
-    options:[
-      { t:"Diferenciação da marca.", ok:false },
-      { t:"Comunicação efetiva.", ok:false },
-      { t:"Atratividade para múltiplos sentidos — visão e audição aumentam a retenção.", ok:true },
-      { t:"Autoridade.", ok:false }
-    ],
-    exp:"A apostila: 'Aborda vários sentidos, como visão e audição, o que aumenta a probabilidade de o público reter informações'."
-  },
-  { id:13, type:"choice", badge:"13. Múltipla Escolha • Engajamento",
-    title:"Qual das opções abaixo NÃO está entre os 5 benefícios do engajamento do público listados na apostila?",
-    options:[
-      { t:"Construção de relacionamentos.", ok:false },
-      { t:"Aumento da conversão.", ok:false },
-      { t:"Redução da equipe de TI.", ok:true },
-      { t:"Feedback valioso.", ok:false }
-    ],
-    exp:"Os 5 benefícios são: construção de relacionamentos, visibilidade e reconhecimento, feedback valioso, construção de comunidades e aumento da conversão. 'Redução da equipe de TI' não é citado."
-  },
-  { id:14, type:"number", badge:"14. Resposta Numérica • Engajamento",
-    title:"Segundo a apostila, quantas ESTRATÉGIAS para melhorar o engajamento são listadas na seção 'Engajamento do Público'?",
-    sub:"Informe apenas o número:",
-    answer:10,
-    exp:"São 10: conteúdo de qualidade, narrativa atraente, mídias visuais, interatividade, resposta a comentários, conteúdo gerado pelo usuário, personalização, campanhas e desafios, acesso antecipado e consistência."
-  },
-  { id:15, type:"tf", badge:"15. Verdadeiro ou Falso • Personalização",
-    title:"Segundo a apostila, a personalização do conteúdo também é um DESAFIO, porque requer entender profundamente os gostos individuais e usar dados de forma ética.",
-    ok:true,
-    exp:"Verdadeiro! A apostila classifica 'Personalização Demanda Precisão' como um dos 6 desafios avançados."
-  },
-  { id:16, type:"choice", badge:"16. Múltipla Escolha • Atividade Oficial",
-    title:"De que forma a crescente importância do conteúdo visual e multimídia afetou a gestão de conteúdo web, segundo a apostila?",
-    options:[
-      { t:"Reduziu o tempo de produção.", ok:false },
-      { t:"Aumentou as exigências: produção mais sofisticada com narrativas de impacto, interatividade e qualidade visual.", ok:true },
-      { t:"Eliminou a necessidade de SEO.", ok:false },
-      { t:"Não teve impacto.", ok:false }
-    ],
-    exp:"A apostila dedica uma seção inteira a 'Produção de Conteúdo Multimídia Premium', destacando que o padrão de qualidade subiu."
-  },
-  { id:17, type:"match", badge:"17. Associação • Multimídia Premium",
-    title:"Associe cada exemplo de conteúdo multimídia premium à sua característica principal:",
-    pairs:[
-      { left:"Podcasts profissionais", right:"Discussões aprofundadas e entrevistas" },
-      { left:"Webinars interativos", right:"Sessões ao vivo ou gravadas com interação" },
-      { left:"Realidade Virtual", right:"Experiências imersivas em 3D" }
-    ],
-    exp:"Esses são 3 dos exemplos dados pela apostila na seção de Multimídia Premium."
-  },
-  { id:18, type:"buckets", badge:"18. Classificação • Jornada do Consumidor",
-    title:"Classifique o tipo de conteúdo mais apropriado para cada estágio da jornada (conforme apostila):",
-    buckets:["Estágio inicial (conscientização)","Estágio final (decisão)"],
-    items:[
-      { text:"Conteúdo educativo sobre o problema", b:0 },
-      { text:"Comparativos de soluções", b:0 },
-      { text:"Depoimentos e garantias", b:1 },
-      { text:"Oferta clara e fechamento", b:1 }
-    ],
-    exp:"A apostila diz que personas revisitadas permitem criar conteúdo específico para cada estágio, desde conscientização até decisão."
-  },
-  { id:19, type:"errorcode", badge:"19. Caça ao Erro • SEO",
-    title:"Clique na linha que contém uma afirmação ERRADA sobre SEO avançado:",
-    lines:[
-      "O SEO avançado considera fatores técnicos, estratégicos e de experiência do usuário.",
-      "Link building estratégico busca quantidade massiva de links, sem se importar com a qualidade.",
-      "A intenção de busca ajuda a fornecer respostas relevantes, não apenas a atender palavras-chave.",
-      "O SEO avançado se estende também às mídias sociais e caixas de resposta em destaque."
-    ],
-    errLine:1,
-    exp:"A apostila diz o oposto: 'em vez de simplesmente buscar quantidades massivas de links, as estratégias avançadas envolvem a criação de relacionamentos estratégicos, parcerias e conteúdo altamente compartilhável'."
-  },
-  { id:20, type:"choice", badge:"20. Múltipla Escolha • Síntese",
-    title:"Qual é a síntese que a apostila apresenta sobre a evolução da gestão de conteúdo web?",
-    options:[
-      { t:"Uma narrativa de constante adaptação às mudanças tecnológicas e às expectativas do público.", ok:true },
-      { t:"Um fenômeno isolado, sem relação com a tecnologia.", ok:false },
-      { t:"Uma tendência passageira dos anos 2000.", ok:false },
-      { t:"Um processo exclusivo de grandes empresas.", ok:false }
-    ],
-    exp:"A apostila afirma: 'a evolução da gestão de conteúdo web é uma narrativa de constante adaptação às mudanças tecnológicas e às expectativas do público'."
+(function(){
+  'use strict';
+
+  /* ==================== UTILITÁRIOS ==================== */
+  function escapeHTML(str){
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
-];
-
-var curQ = 0, score = 0, streak = 0, userAnswers = {};
-
-function initApp() { renderNavDots(); renderAllQuestions(); showQuestion(0); }
-
-function updateHUD() {
-  document.getElementById('val-score').textContent = score;
-  document.getElementById('val-streak').textContent = streak;
-  var answeredCount = Object.keys(userAnswers).length;
-  document.getElementById('txt-prog').textContent = 'Questão ' + (curQ + 1) + ' de ' + DATABASE.length + ' (' + answeredCount + ' respondidas)';
-  document.getElementById('bar-prog').style.width = ((answeredCount / DATABASE.length) * 100) + '%';
-}
-
-function renderNavDots() {
-  var container = document.getElementById('dots-container');
-  container.innerHTML = '';
-  DATABASE.forEach(function(q, idx){
-    var dot = document.createElement('button');
-    dot.className = 'nav-dot';
-    dot.id = 'dot-' + idx;
-    dot.textContent = idx + 1;
-    dot.onclick = function(){ showQuestion(idx); };
-    container.appendChild(dot);
-  });
-}
-
-function showQuestion(idx) {
-  curQ = idx;
-  document.querySelectorAll('.question-card').forEach(function(c){ c.classList.remove('active'); });
-  var target = document.getElementById('q-card-' + idx);
-  if(target) target.classList.add('active');
-  document.querySelectorAll('.nav-dot').forEach(function(d){ d.classList.remove('active'); });
-  var dot = document.getElementById('dot-' + idx);
-  if(dot){
-    dot.classList.add('active');
-    dot.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+  function normalizeText(str){
+    return String(str).toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
   }
-  updateHUD();
-}
-
-function renderAllQuestions() {
-  var viewport = document.getElementById('questions-viewport');
-  viewport.innerHTML = '';
-  DATABASE.forEach(function(q, idx){
-    var card = document.createElement('section');
-    card.className = 'question-card';
-    card.id = 'q-card-' + idx;
-    var bodyHTML = '';
-
-    if(q.type === 'choice'){
-      bodyHTML = '<div class="options-grid">' + q.options.map(function(opt, oIdx){
-        return '<button type="button" class="opt-btn" onclick="checkChoice(' + idx + ',' + oIdx + ')">' +
-               '<strong style="color:var(--primary);font-size:1.05rem;">' + ['A','B','C','D'][oIdx] + '</strong>' +
-               '<span>' + escapeHTML(opt.t) + '</span></button>';
-      }).join('') + '</div>';
-    } else if(q.type === 'tf'){
-      bodyHTML = '<div class="options-grid">' +
-        '<button type="button" class="opt-btn" onclick="checkTF(' + idx + ', true)"><strong style="color:var(--ok);font-size:1.2rem;">V</strong> <span>Verdadeiro</span></button>' +
-        '<button type="button" class="opt-btn" onclick="checkTF(' + idx + ', false)"><strong style="color:var(--no);font-size:1.2rem;">F</strong> <span>Falso</span></button>' +
-        '</div>';
-    } else if(q.type === 'multi'){
-      bodyHTML = '<div class="options-grid" id="multi-opts-' + idx + '">' +
-        q.options.map(function(opt, oIdx){
-          return '<button type="button" class="opt-btn" onclick="toggleMulti(' + idx + ',' + oIdx + ')">' +
-                 '<span class="chk-box" style="font-size:1.1rem;color:var(--primary);">⬜</span>' +
-                 '<span>' + escapeHTML(opt.t) + '</span></button>';
-        }).join('') +
-        '</div><button type="button" class="btn-action" style="margin-top:12px;" onclick="checkMulti(' + idx + ')">Confirmar Seleção</button>';
-    } else if(q.type === 'typed' || q.type === 'number'){
-      bodyHTML = '<div class="input-answer-box">' +
-        '<input type="text" class="custom-input" id="input-' + idx + '" ' +
-        'placeholder="' + (q.type === 'number' ? 'Ex: 9' : 'Digite a palavra-chave...') + '" ' +
-        'autocomplete="off" onkeydown="if(event.key===\'Enter\') checkInput(' + idx + ')">' +
-        '<button type="button" class="btn-action" onclick="checkInput(' + idx + ')">Confirmar</button></div>';
-    } else if(q.type === 'sort'){
-      bodyHTML = '<div class="sortable-list" id="sort-list-' + idx + '">' +
-        q.items.map(function(item, iIdx){
-          return '<div class="sort-item" data-pos="' + iIdx + '">' +
-                 '<span>' + item + '</span>' +
-                 '<div class="sort-actions">' +
-                 '<button type="button" class="btn-sort" onclick="moveSort(' + idx + ',' + iIdx + ',-1)">▲</button>' +
-                 '<button type="button" class="btn-sort" onclick="moveSort(' + idx + ',' + iIdx + ',1)">▼</button>' +
-                 '</div></div>';
-        }).join('') +
-        '</div><button type="button" class="btn-action" style="margin-top:12px;" onclick="checkSort(' + idx + ')">Verificar Ordem</button>';
-    } else if(q.type === 'match'){
-      bodyHTML = '<div class="match-grid">' +
-        '<div class="match-col" id="match-l-' + idx + '">' +
-        q.pairs.map(function(p, pIdx){
-          return '<button type="button" class="match-btn" data-type="l" data-idx="' + pIdx + '" onclick="clickMatch(' + idx + ',\'l\',' + pIdx + ')">' + escapeHTML(p.left) + '</button>';
-        }).join('') + '</div>' +
-        '<div class="match-col" id="match-r-' + idx + '">' +
-        shuffle(q.pairs.slice()).map(function(p){
-          return '<button type="button" class="match-btn" data-type="r" data-val="' + escapeHTML(p.right) + '" onclick="clickMatch(' + idx + ',\'r\',\'' + escapeHTML(p.right).replace(/'/g, '&#39;') + '\')">' + escapeHTML(p.right) + '</button>';
-        }).join('') + '</div></div>';
-    } else if(q.type === 'buckets'){
-      bodyHTML = '<div class="bucket-pool" id="pool-' + idx + '">' +
-        q.items.map(function(it, iIdx){
-          return '<span class="chip-item" id="chip-' + idx + '-' + iIdx + '" onclick="pickChip(' + idx + ',' + iIdx + ')">' + it.text + '</span>';
-        }).join('') + '</div>' +
-        '<div class="buckets-container">' +
-        q.buckets.map(function(bName, bIdx){
-          return '<div class="bucket" onclick="placeChip(' + idx + ',' + bIdx + ')">' +
-                 '<div class="bucket-title">📂 ' + bName + ' (clique para colocar)</div>' +
-                 '<div class="bucket-items" id="b-items-' + idx + '-' + bIdx + '"></div></div>';
-        }).join('') +
-        '</div><button type="button" class="btn-action" style="margin-top:12px;" onclick="checkBuckets(' + idx + ')">Conferir Distribuição</button>';
-    } else if(q.type === 'gap'){
-      bodyHTML = '<div style="background:#070c16;padding:18px;border:2px solid var(--border);border-radius:10px;font-family:monospace;margin:16px 0;font-size:1rem;color:#fff;">' +
-        q.snippet.replace('_____1_____', '<select class="gap-select" id="gap-sel-' + idx + '">' +
-          '<option value="">-- escolha --</option>' +
-          q.options.map(function(o){ return '<option value="' + o + '">' + o + '</option>'; }).join('') +
-          '</select>') +
-        '</div><button type="button" class="btn-action" onclick="checkGap(' + idx + ')">Confirmar Lacuna</button>';
-    } else if(q.type === 'hotspot'){
-      bodyHTML = '<div class="evolution-hotspot">' +
-        '<div class="evo-card" onclick="clickHotspot(' + idx + ',\'era1\',this)"><span class="emoji">📄</span><span class="titulo">Sites Estáticos</span><span class="periodo">Simplicidade inicial</span></div>' +
-        '<div class="evo-card" onclick="clickHotspot(' + idx + ',\'era2\',this)"><span class="emoji">🗄️</span><span class="titulo">CMS + Redes</span><span class="periodo">Democratização</span></div>' +
-        '<div class="evo-card" onclick="clickHotspot(' + idx + ',\'era3\',this)"><span class="emoji">🔍</span><span class="titulo">SEO + Mobile</span><span class="periodo">Busca e mobilidade</span></div>' +
-        '<div class="evo-card" onclick="clickHotspot(' + idx + ',\'era4\',this)"><span class="emoji">🤖</span><span class="titulo">IA + Personalização</span><span class="periodo">Era atual</span></div>' +
-        '</div>';
-    } else if(q.type === 'errorcode'){
-      bodyHTML = '<div class="code-error-box">' +
-        q.lines.map(function(l, lIdx){
-          return '<div class="code-line" onclick="clickErrorLine(' + idx + ',' + lIdx + ')">' +
-                 '<span class="line-no">' + (lIdx + 1) + '</span>' +
-                 '<code>' + escapeHTML(l) + '</code></div>';
-        }).join('') + '</div>';
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+  function shuffleDifferent(arr, comparator){
+    var tries = 0;
+    var out = shuffle(arr);
+    while(tries < 10 && comparator(out)){
+      out = shuffle(arr);
+      tries++;
     }
-
-    card.innerHTML =
-      '<div class="q-badge">' + q.badge + '</div>' +
-      '<div class="q-statement">' + q.title + '</div>' +
-      (q.sub ? '<div class="q-subtext">' + q.sub + '</div>' : '') +
-      bodyHTML +
-      '<div class="feedback-box" id="fb-' + idx + '"></div>' +
-      '<div class="q-footer">' +
-        '<button type="button" class="btn-action btn-sec" onclick="showQuestion(Math.max(0,' + (idx - 1) + '))" ' + (idx === 0 ? 'disabled' : '') + '>⬅ Anterior</button>' +
-        '<span style="font-size:0.85rem;color:var(--text-muted);font-weight:800;">' + (idx + 1) + ' / 20</span>' +
-        '<button type="button" class="btn-action" onclick="nextOrFinish(' + idx + ')">' + (idx === 19 ? 'Finalizar Desafio 🏁' : 'Próxima ➡') + '</button>' +
-      '</div>';
-    viewport.appendChild(card);
-  });
-}
-
-function registerAnswer(qIdx, isOk, expText) {
-  if (userAnswers[qIdx] !== undefined) return;
-  userAnswers[qIdx] = { ok: isOk };
-  var fb = document.getElementById('fb-' + qIdx);
-  fb.className = 'feedback-box show ' + (isOk ? 'ok' : 'no');
-  fb.innerHTML = '<strong>' + (isOk ? '✅ Resposta Correta!' : '❌ Resposta Incorreta.') + '</strong><br>' + expText;
-  var dot = document.getElementById('dot-' + qIdx);
-  if (dot) dot.className = 'nav-dot ' + (isOk ? 'done-ok' : 'done-no');
-  if (isOk) { score += 100 + (streak * 20); streak++; } else { streak = 0; }
-  updateHUD();
-}
-
-function checkChoice(qIdx, optIdx) {
-  var q = DATABASE[qIdx];
-  var isOk = q.options[optIdx].ok;
-  var btns = document.querySelectorAll('#q-card-' + qIdx + ' .opt-btn');
-  btns.forEach(function(b, i){
-    b.disabled = true;
-    if (q.options[i].ok) b.classList.add('correct');
-    else if (i === optIdx) b.classList.add('wrong');
-  });
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function checkTF(qIdx, val) {
-  var q = DATABASE[qIdx];
-  var isOk = (q.ok === val);
-  var btns = document.querySelectorAll('#q-card-' + qIdx + ' .opt-btn');
-  btns.forEach(function(b){ b.disabled = true; });
-  if (val === true) btns[0].classList.add(isOk ? 'correct' : 'wrong');
-  else btns[1].classList.add(isOk ? 'correct' : 'wrong');
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-var multiState = {};
-function toggleMulti(qIdx, oIdx) {
-  if (userAnswers[qIdx]) return;
-  if (!multiState[qIdx]) multiState[qIdx] = new Set();
-  var set = multiState[qIdx];
-  var btn = document.querySelectorAll('#multi-opts-' + qIdx + ' .opt-btn')[oIdx];
-  if (set.has(oIdx)) {
-    set.delete(oIdx);
-    btn.classList.remove('selected-multi');
-    btn.querySelector('.chk-box').textContent = '⬜';
-  } else {
-    set.add(oIdx);
-    btn.classList.add('selected-multi');
-    btn.querySelector('.chk-box').textContent = '☑️';
+    return out;
   }
-}
 
-function checkMulti(qIdx) {
-  var q = DATABASE[qIdx];
-  var chosen = multiState[qIdx] || new Set();
-  var correctIndices = q.options.map(function(o, i){ return o.ok ? i : null; }).filter(function(i){ return i !== null; });
-  var isOk = correctIndices.length === chosen.size && correctIndices.every(function(i){ return chosen.has(i); });
-  var btns = document.querySelectorAll('#multi-opts-' + qIdx + ' .opt-btn');
-  btns.forEach(function(b, i){
-    b.disabled = true;
-    if (q.options[i].ok && chosen.has(i)) { b.className = 'opt-btn correct'; b.querySelector('.chk-box').textContent = '✅'; }
-    else if (q.options[i].ok && !chosen.has(i)) { b.className = 'opt-btn missed'; b.querySelector('.chk-box').textContent = '⚠️'; }
-    else if (!q.options[i].ok && chosen.has(i)) { b.className = 'opt-btn wrong'; b.querySelector('.chk-box').textContent = '❌'; }
-  });
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function checkInput(qIdx) {
-  var q = DATABASE[qIdx];
-  var input = document.getElementById('input-' + qIdx);
-  var raw = input.value.trim().toLowerCase();
-  if (!raw) return;
-  input.disabled = true;
-  var isOk = false;
-  if (q.type === 'number') {
-    var num = parseFloat(raw.replace('px', '').trim());
-    isOk = (num === q.answer);
-  } else {
-    isOk = raw.indexOf(q.answer) !== -1;
+  var modalResolve = null;
+  function abrirModal(msg){
+    document.getElementById('modalTexto').textContent = msg;
+    document.getElementById('modalOverlay').style.display = 'flex';
+    document.getElementById('modalConfirmar').focus();
+    return new Promise(function(resolve){ modalResolve = resolve; });
   }
-  input.style.borderColor = isOk ? 'var(--ok)' : 'var(--no)';
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function moveSort(qIdx, iIdx, dir) {
-  if (userAnswers[qIdx]) return;
-  var list = document.getElementById('sort-list-' + qIdx);
-  var items = Array.from(list.children);
-  var targetIdx = iIdx + dir;
-  if (targetIdx < 0 || targetIdx >= items.length) return;
-  if (dir === 1) list.insertBefore(items[targetIdx], items[iIdx]);
-  else list.insertBefore(items[iIdx], items[targetIdx]);
-  Array.from(list.children).forEach(function(el, newI){
-    var btns = el.querySelectorAll('.btn-sort');
-    btns[0].onclick = function(){ moveSort(qIdx, newI, -1); };
-    btns[1].onclick = function(){ moveSort(qIdx, newI, 1); };
-  });
-}
-
-function checkSort(qIdx) {
-  var q = DATABASE[qIdx];
-  var list = document.getElementById('sort-list-' + qIdx);
-  var currentPositions = Array.from(list.children).map(function(c){ return parseInt(c.dataset.pos, 10); });
-  var isOk = currentPositions.every(function(val, i){ return val === q.correctOrder[i]; });
-  list.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-var matchState = {};
-function clickMatch(qIdx, side, val) {
-  if (userAnswers[qIdx]) return;
-  if (!matchState[qIdx]) matchState[qIdx] = { l:null, r:null, matches:{} };
-  var st = matchState[qIdx];
-  if (side === 'l') {
-    document.querySelectorAll('#match-l-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
-    st.l = val;
-    var elL = document.querySelector('#match-l-' + qIdx + ' [data-idx="' + val + '"]');
-    if(elL) elL.classList.add('selected');
-  } else {
-    document.querySelectorAll('#match-r-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
-    st.r = val;
-    var elR = document.querySelector('#match-r-' + qIdx + ' [data-val="' + val + '"]');
-    if(elR) elR.classList.add('selected');
+  function fecharModal(v){
+    document.getElementById('modalOverlay').style.display = 'none';
+    if(modalResolve){ modalResolve(v); modalResolve = null; }
   }
-  if (st.l !== null && st.r !== null) {
+  document.getElementById('modalConfirmar').addEventListener('click', function(){ fecharModal(true); });
+  document.getElementById('modalCancelar').addEventListener('click', function(){ fecharModal(false); });
+  document.getElementById('modalOverlay').addEventListener('click', function(e){ if(e.target === this) fecharModal(false); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.getElementById('modalOverlay').style.display === 'flex') fecharModal(false);
+  });
+
+  /* ==================== DATABASE ==================== */
+  var DATABASE = [
+    { id:1, type:"choice", badge:"1. Múltipla Escolha • Evolução",
+      title:"Segundo a apostila, como a gestão de conteúdo era caracterizada no início da era da internet?",
+      options:[
+        { t:"Pela personalização avançada e interatividade em tempo real.", ok:false },
+        { t:"Pela simplicidade dos sites estáticos, com foco em texto e imagens básicas.", ok:true },
+        { t:"Pelo uso intenso de inteligência artificial.", ok:false },
+        { t:"Por algoritmos de busca avançados.", ok:false }
+      ],
+      exp:"A apostila diz: 'a gestão de conteúdo era caracterizada pela simplicidade dos sites estáticos, onde o foco estava em transmitir informações básicas por meio de texto e imagens'."
+    },
+    { id:2, type:"tf", badge:"2. Verdadeiro ou Falso • CMS",
+      title:"Segundo a apostila, os CMS tornaram a gestão de conteúdo acessível a uma variedade maior de pessoas, impulsionando blogs, fóruns e comunidades.",
+      ok:true,
+      exp:"Verdadeiro! A apostila afirma que 'permitiu que uma variedade maior de pessoas criasse e compartilhasse conteúdo, impulsionando a criação de blogs, fóruns e comunidades online'."
+    },
+    { id:3, type:"multi", badge:"3. Múltiplas Respostas • Desafios",
+      title:"Quais dos itens abaixo a apostila lista como DESAFIOS AVANÇADOS na gestão de conteúdo web? (Selecione todos)",
+      options:[
+        { t:"Saturação de conteúdo", ok:true },
+        { t:"Mudanças algorítmicas", ok:true },
+        { t:"Falta de eletricidade nos servidores", ok:false },
+        { t:"Métricas de desempenho complexas", ok:true }
+      ],
+      exp:"A apostila lista 6 desafios: saturação de conteúdo, mudanças algorítmicas, personalização demanda precisão, diversificação de plataformas, evolução tecnológica e métricas complexas."
+    },
+    { id:4, type:"typed", badge:"4. Resposta Digitada • Personas",
+      title:"Segundo a apostila, <strong>público-alvo</strong> representa um grupo demográfico amplo. E <strong>personas</strong> são o quê? Digite a palavra-chave que caracteriza a persona.",
+      sub:"Dica: a apostila usa uma expressão específica. Digite apenas a palavra (ex: personagens):",
+      answer:"personagens",
+      exp:"A apostila diz que persona são 'personagens fictícios que incorporam características, motivações e desafios do público-alvo específico'."
+    },
+    { id:5, type:"number", badge:"5. Resposta Numérica • Métricas",
+      title:"Segundo a apostila, quantas MÉTRICAS AVANÇADAS são listadas na seção de Métricas e Análise de Dados?",
+      sub:"Informe apenas o número:",
+      answer:9,
+      exp:"São 9: Taxa de Conversão por Segmento, Análise de Funil, Tempo de Permanência por Conteúdo, Taxa de Rejeição por Página, Taxa de Compartilhamento Social, Engajamento em Dispositivos Móveis, Testes A/B, Análise de Palavras-Chave e Taxa de Conversão por Canal de Marketing."
+    },
+    { id:6, type:"sort", badge:"6. Ordenação • Evolução Histórica",
+      title:"Ordene os 4 grandes marcos da evolução da gestão de conteúdo web, conforme a apostila (do mais antigo ao mais recente):",
+      items:[
+        "Sites estáticos (simplicidade, texto e imagem)",
+        "CMS + redes sociais (democratização da publicação)",
+        "Motores de busca e SEO + dispositivos móveis (responsividade)",
+        "IA, personalização e redes sociais dominantes (era atual)"
+      ],
+      correctOrder:[0,1,2,3],
+      exp:"Essa é a sequência narrativa da apostila: estático → CMS/redes sociais → SEO + mobile → IA e personalização."
+    },
+    { id:7, type:"match", badge:"7. Associação • Pilares do SEO",
+      title:"Associe cada termo de SEO avançado à sua definição, conforme a apostila:",
+      pairs:[
+        { left:"Cauda longa", right:"Palavras-chave específicas e mais direcionadas" },
+        { left:"LSI", right:"Variações semânticas que reforçam o tema" },
+        { left:"Intenção de busca", right:"O que o usuário quer ao digitar a consulta" }
+      ],
+      exp:"A apostila lista cauda longa (mais específicas), LSI (conteúdo natural) e intenção de busca (respostas relevantes e completas)."
+    },
+    { id:8, type:"buckets", badge:"8. Classificação • Desafios × Oportunidades",
+      title:"Classifique cada item como DESAFIO ou OPORTUNIDADE avançada, conforme a apostila:",
+      buckets:["Desafio","Oportunidade"],
+      items:[
+        { text:"Saturação de conteúdo", b:0 },
+        { text:"Experiência do usuário aprimorada", b:1 },
+        { text:"Mudanças algorítmicas", b:0 },
+        { text:"Expansão global", b:1 }
+      ],
+      exp:"Saturação e mudanças algorítmicas são desafios. Experiência aprimorada e expansão global são oportunidades."
+    },
+    { id:9, type:"gap", badge:"9. Completar Lacunas • SEO",
+      title:"Complete o trecho conforme a apostila descreve o uso de palavras-chave LSI:",
+      snippet:'O uso de palavras-chave <b>LSI</b> ajuda a criar conteúdo mais natural e <b>_____1_____</b>.',
+      options:["relacionado","complexo","longo","técnico"],
+      correct:"relacionado",
+      exp:"A apostila diz: 'o uso de palavras-chave LSI (Indexação Semântica Latente) ajuda a criar conteúdo mais natural e relacionado'."
+    },
+    { id:10, type:"hotspot", badge:"10. Hotspot • Era Atual",
+      title:"Clique no cartão que representa a era em que as REDES SOCIAIS emergiram como plataformas poderosas de compartilhamento de conteúdo, segundo a apostila:",
+      target:"era4",
+      exp:"A apostila diz: 'Nos últimos anos, as redes sociais emergiram como poderosas plataformas de compartilhamento de conteúdo' — essa é a era atual (IA + personalização + redes sociais)."
+    },
+    { id:11, type:"errorcode", badge:"11. Caça ao Erro • Conceito",
+      title:"Clique na linha que contém uma afirmação ERRADA em relação ao que a apostila diz:",
+      lines:[
+        "A evolução do CMS permitiu que mais pessoas publicassem conteúdo.",
+        "Sites estáticos já tinham personalização avançada e IA integrada.",
+        "SEO avançado envolve cauda longa, LSI e intenção de busca.",
+        "Métricas avançadas ajudam na tomada de decisões informadas."
+      ],
+      errLine:1,
+      exp:"A apostila diz exatamente o contrário: sites estáticos eram simples, sem personalização nem interação. IA e personalização só vieram na era atual."
+    },
+    { id:12, type:"choice", badge:"12. Múltipla Escolha • Multimídia",
+      title:"Segundo a apostila, qual é a vantagem da produção de conteúdo multimídia premium que se refere a abordar vários sentidos?",
+      options:[
+        { t:"Diferenciação da marca.", ok:false },
+        { t:"Comunicação efetiva.", ok:false },
+        { t:"Atratividade para múltiplos sentidos — visão e audição aumentam a retenção.", ok:true },
+        { t:"Autoridade.", ok:false }
+      ],
+      exp:"A apostila: 'Aborda vários sentidos, como visão e audição, o que aumenta a probabilidade de o público reter informações'."
+    },
+    { id:13, type:"choice", badge:"13. Múltipla Escolha • Engajamento",
+      title:"Qual das opções abaixo NÃO está entre os 5 benefícios do engajamento do público listados na apostila?",
+      options:[
+        { t:"Construção de relacionamentos.", ok:false },
+        { t:"Aumento da conversão.", ok:false },
+        { t:"Redução da equipe de TI.", ok:true },
+        { t:"Feedback valioso.", ok:false }
+      ],
+      exp:"Os 5 benefícios são: construção de relacionamentos, visibilidade e reconhecimento, feedback valioso, construção de comunidades e aumento da conversão. 'Redução da equipe de TI' não é citado."
+    },
+    { id:14, type:"number", badge:"14. Resposta Numérica • Engajamento",
+      title:"Segundo a apostila, quantas ESTRATÉGIAS para melhorar o engajamento são listadas na seção 'Engajamento do Público'?",
+      sub:"Informe apenas o número:",
+      answer:10,
+      exp:"São 10: conteúdo de qualidade, narrativa atraente, mídias visuais, interatividade, resposta a comentários, conteúdo gerado pelo usuário, personalização, campanhas e desafios, acesso antecipado e consistência."
+    },
+    { id:15, type:"tf", badge:"15. Verdadeiro ou Falso • Personalização",
+      title:"Segundo a apostila, a personalização do conteúdo também é um DESAFIO, porque requer entender profundamente os gostos individuais e usar dados de forma ética.",
+      ok:true,
+      exp:"Verdadeiro! A apostila classifica 'Personalização Demanda Precisão' como um dos 6 desafios avançados."
+    },
+    { id:16, type:"choice", badge:"16. Múltipla Escolha • Atividade Oficial",
+      title:"De que forma a crescente importância do conteúdo visual e multimídia afetou a gestão de conteúdo web, segundo a apostila?",
+      options:[
+        { t:"Reduziu o tempo de produção.", ok:false },
+        { t:"Aumentou as exigências: produção mais sofisticada com narrativas de impacto, interatividade e qualidade visual.", ok:true },
+        { t:"Eliminou a necessidade de SEO.", ok:false },
+        { t:"Não teve impacto.", ok:false }
+      ],
+      exp:"A apostila dedica uma seção inteira a 'Produção de Conteúdo Multimídia Premium', destacando que o padrão de qualidade subiu."
+    },
+    { id:17, type:"match", badge:"17. Associação • Multimídia Premium",
+      title:"Associe cada exemplo de conteúdo multimídia premium à sua característica principal:",
+      pairs:[
+        { left:"Podcasts profissionais", right:"Discussões aprofundadas e entrevistas" },
+        { left:"Webinars interativos", right:"Sessões ao vivo ou gravadas com interação" },
+        { left:"Realidade Virtual", right:"Experiências imersivas em 3D" }
+      ],
+      exp:"Esses são 3 dos exemplos dados pela apostila na seção de Multimídia Premium."
+    },
+    { id:18, type:"buckets", badge:"18. Classificação • Jornada do Consumidor",
+      title:"Classifique o tipo de conteúdo mais apropriado para cada estágio da jornada (conforme apostila):",
+      buckets:["Estágio inicial (conscientização)","Estágio final (decisão)"],
+      items:[
+        { text:"Conteúdo educativo sobre o problema", b:0 },
+        { text:"Comparativos de soluções", b:0 },
+        { text:"Depoimentos e garantias", b:1 },
+        { text:"Oferta clara e fechamento", b:1 }
+      ],
+      exp:"A apostila diz que personas revisitadas permitem criar conteúdo específico para cada estágio, desde conscientização até decisão."
+    },
+    { id:19, type:"errorcode", badge:"19. Caça ao Erro • SEO",
+      title:"Clique na linha que contém uma afirmação ERRADA sobre SEO avançado:",
+      lines:[
+        "O SEO avançado considera fatores técnicos, estratégicos e de experiência do usuário.",
+        "Link building estratégico busca quantidade massiva de links, sem se importar com a qualidade.",
+        "A intenção de busca ajuda a fornecer respostas relevantes, não apenas a atender palavras-chave.",
+        "O SEO avançado se estende também às mídias sociais e caixas de resposta em destaque."
+      ],
+      errLine:1,
+      exp:"A apostila diz o oposto: 'em vez de simplesmente buscar quantidades massivas de links, as estratégias avançadas envolvem a criação de relacionamentos estratégicos, parcerias e conteúdo altamente compartilhável'."
+    },
+    { id:20, type:"choice", badge:"20. Múltipla Escolha • Síntese",
+      title:"Qual é a síntese que a apostila apresenta sobre a evolução da gestão de conteúdo web?",
+      options:[
+        { t:"Uma narrativa de constante adaptação às mudanças tecnológicas e às expectativas do público.", ok:true },
+        { t:"Um fenômeno isolado, sem relação com a tecnologia.", ok:false },
+        { t:"Uma tendência passageira dos anos 2000.", ok:false },
+        { t:"Um processo exclusivo de grandes empresas.", ok:false }
+      ],
+      exp:"A apostila afirma: 'a evolução da gestão de conteúdo web é uma narrativa de constante adaptação às mudanças tecnológicas e às expectativas do público'."
+    }
+  ];
+
+  /* ==================== ESTADO ==================== */
+  var curQ = 0, score = 0, streak = 0;
+  var userAnswers = {};
+  var multiState = {};
+  var matchState = {};
+  var bucketState = {};
+
+  /* ==================== HUD ==================== */
+  function updateHUD(){
+    document.getElementById('val-score').textContent = score;
+    document.getElementById('val-streak').textContent = streak;
+    var answeredCount = Object.keys(userAnswers).length;
+    document.getElementById('txt-prog').textContent = 'Questão ' + (curQ + 1) + ' de ' + DATABASE.length + ' (' + answeredCount + ' respondidas)';
+    document.getElementById('bar-prog').style.width = ((answeredCount / DATABASE.length) * 100) + '%';
+    document.getElementById('bar-aria').setAttribute('aria-valuenow', String(answeredCount));
+  }
+
+  /* ==================== NAV DOTS ==================== */
+  function renderNavDots(){
+    var container = document.getElementById('dots-container');
+    container.innerHTML = '';
+    DATABASE.forEach(function(q, idx){
+      var dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      dot.id = 'dot-' + idx;
+      dot.textContent = idx + 1;
+      dot.setAttribute('role','tab');
+      dot.setAttribute('aria-label','Ir para questão ' + (idx + 1));
+      dot.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+      dot.addEventListener('click', function(){ showQuestion(idx); });
+      container.appendChild(dot);
+    });
+  }
+
+  function showQuestion(idx){
+    curQ = idx;
+    document.querySelectorAll('.question-card').forEach(function(c){ c.classList.remove('active'); });
+    var target = document.getElementById('q-card-' + idx);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach(function(d){
+      d.classList.remove('active');
+      d.setAttribute('aria-selected','false');
+    });
+    var dot = document.getElementById('dot-' + idx);
+    if(dot){
+      dot.classList.add('active');
+      dot.setAttribute('aria-selected','true');
+      dot.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+    }
+    updateHUD();
+  }
+
+  /* ==================== RENDER ==================== */
+  function renderAllQuestions(){
+    var viewport = document.getElementById('questions-viewport');
+    viewport.innerHTML = '';
+    DATABASE.forEach(function(q, idx){
+      var card = document.createElement('section');
+      card.className = 'question-card';
+      card.id = 'q-card-' + idx;
+      card.setAttribute('role','region');
+      card.setAttribute('aria-label','Questão ' + (idx + 1) + ': ' + q.badge);
+      var bodyHTML = '';
+
+      if(q.type === 'choice'){
+        bodyHTML = '<div class="options-grid" role="group" aria-label="Alternativas">' +
+          q.options.map(function(opt, oIdx){
+            return '<button type="button" class="opt-btn" data-q="' + idx + '" data-o="' + oIdx + '">' +
+                   '<strong style="color:var(--primary);font-size:1.05rem;">' + ['A','B','C','D'][oIdx] + '</strong>' +
+                   '<span>' + escapeHTML(opt.t) + '</span></button>';
+          }).join('') + '</div>';
+
+      } else if(q.type === 'tf'){
+        bodyHTML = '<div class="options-grid" role="group" aria-label="Verdadeiro ou Falso">' +
+          '<button type="button" class="opt-btn" data-q="' + idx + '" data-v="true"><strong style="color:var(--ok);font-size:1.2rem;">V</strong> <span>Verdadeiro</span></button>' +
+          '<button type="button" class="opt-btn" data-q="' + idx + '" data-v="false"><strong style="color:var(--no);font-size:1.2rem;">F</strong> <span>Falso</span></button>' +
+          '</div>';
+
+      } else if(q.type === 'multi'){
+        bodyHTML = '<div class="options-grid" id="multi-opts-' + idx + '" role="group" aria-label="Múltipla seleção">' +
+          q.options.map(function(opt, oIdx){
+            return '<button type="button" class="opt-btn" data-q="' + idx + '" data-multi="' + oIdx + '" aria-pressed="false">' +
+                   '<span class="chk-box" style="font-size:1.1rem;color:var(--primary);">⬜</span>' +
+                   '<span>' + escapeHTML(opt.t) + '</span></button>';
+          }).join('') +
+          '</div><button type="button" class="btn-action" id="multi-confirm-' + idx + '" data-q="' + idx + '" style="margin-top:12px;">Confirmar Seleção</button>';
+
+      } else if(q.type === 'typed' || q.type === 'number'){
+        bodyHTML = '<div class="input-answer-box">' +
+          '<input type="text" class="custom-input" id="input-' + idx + '" data-q="' + idx + '" ' +
+          'placeholder="' + (q.type === 'number' ? 'Ex: 9' : 'Digite a palavra-chave...') + '" ' +
+          'autocomplete="off" aria-label="Sua resposta">' +
+          '<button type="button" class="btn-action" data-q="' + idx + '" data-role="input-confirm">Confirmar</button></div>';
+
+      } else if(q.type === 'sort'){
+        bodyHTML = '<div class="sortable-list" id="sort-list-' + idx + '">' +
+          q.items.map(function(item, iIdx){
+            return '<div class="sort-item" data-pos="' + iIdx + '">' +
+                   '<span>' + escapeHTML(item) + '</span>' +
+                   '<div class="sort-actions">' +
+                   '<button type="button" class="btn-sort" data-q="' + idx + '" data-pos="' + iIdx + '" data-dir="-1" aria-label="Mover para cima">▲</button>' +
+                   '<button type="button" class="btn-sort" data-q="' + idx + '" data-pos="' + iIdx + '" data-dir="1" aria-label="Mover para baixo">▼</button>' +
+                   '</div></div>';
+          }).join('') +
+          '</div><button type="button" class="btn-action" data-q="' + idx + '" data-role="sort-check" style="margin-top:12px;">Verificar Ordem</button>';
+
+      } else if(q.type === 'match'){
+        var rightShuffled = shuffleDifferent(q.pairs.slice(), function(out){
+          return out.every(function(p, i){ return p.right === q.pairs[i].right; });
+        });
+        bodyHTML = '<div class="match-grid">' +
+          '<div class="match-col" id="match-l-' + idx + '">' +
+          q.pairs.map(function(p, pIdx){
+            return '<button type="button" class="match-btn" data-q="' + idx + '" data-side="l" data-idx="' + pIdx + '">' + escapeHTML(p.left) + '</button>';
+          }).join('') + '</div>' +
+          '<div class="match-col" id="match-r-' + idx + '">' +
+          rightShuffled.map(function(p){
+            return '<button type="button" class="match-btn" data-q="' + idx + '" data-side="r" data-val="' + escapeHTML(p.right) + '">' + escapeHTML(p.right) + '</button>';
+          }).join('') + '</div></div>';
+
+      } else if(q.type === 'buckets'){
+        bodyHTML = '<div class="bucket-pool" id="pool-' + idx + '">' +
+          q.items.map(function(it, iIdx){
+            return '<span class="chip-item" id="chip-' + idx + '-' + iIdx + '" data-q="' + idx + '" data-chip="' + iIdx + '">' + escapeHTML(it.text) + '</span>';
+          }).join('') + '</div>' +
+          '<div class="buckets-container">' +
+          q.buckets.map(function(bName, bIdx){
+            return '<div class="bucket" data-q="' + idx + '" data-bucket="' + bIdx + '" role="button" tabindex="0" aria-label="Bucket ' + escapeHTML(bName) + '">' +
+                   '<div class="bucket-title">📂 ' + escapeHTML(bName) + ' (clique para colocar)</div>' +
+                   '<div class="bucket-items" id="b-items-' + idx + '-' + bIdx + '"></div></div>';
+          }).join('') +
+          '</div><button type="button" class="btn-action" data-q="' + idx + '" data-role="bucket-check" style="margin-top:12px;">Conferir Distribuição</button>';
+
+      } else if(q.type === 'gap'){
+        bodyHTML = '<div style="background:#070c16;padding:18px;border:2px solid var(--border);border-radius:10px;font-family:monospace;margin:16px 0;font-size:1rem;color:#fff;">' +
+          q.snippet.replace('_____1_____', '<select class="gap-select" id="gap-sel-' + idx + '" aria-label="Escolha a palavra"><option value="">-- escolha --</option>' +
+            q.options.map(function(o){ return '<option value="' + escapeHTML(o) + '">' + escapeHTML(o) + '</option>'; }).join('') +
+            '</select>') +
+          '</div><button type="button" class="btn-action" data-q="' + idx + '" data-role="gap-check">Confirmar Lacuna</button>';
+
+      } else if(q.type === 'hotspot'){
+        bodyHTML = '<div class="evolution-hotspot">' +
+          '<div class="evo-card" data-q="' + idx + '" data-era="era1" role="button" tabindex="0"><span class="emoji" aria-hidden="true">📄</span><span class="titulo">Sites Estáticos</span><span class="periodo">Simplicidade inicial</span></div>' +
+          '<div class="evo-card" data-q="' + idx + '" data-era="era2" role="button" tabindex="0"><span class="emoji" aria-hidden="true">🗄️</span><span class="titulo">CMS + Redes</span><span class="periodo">Democratização</span></div>' +
+          '<div class="evo-card" data-q="' + idx + '" data-era="era3" role="button" tabindex="0"><span class="emoji" aria-hidden="true">🔍</span><span class="titulo">SEO + Mobile</span><span class="periodo">Busca e mobilidade</span></div>' +
+          '<div class="evo-card" data-q="' + idx + '" data-era="era4" role="button" tabindex="0"><span class="emoji" aria-hidden="true">🤖</span><span class="titulo">IA + Personalização</span><span class="periodo">Era atual</span></div>' +
+          '</div>';
+
+      } else if(q.type === 'errorcode'){
+        bodyHTML = '<div class="code-error-box">' +
+          q.lines.map(function(l, lIdx){
+            return '<div class="code-line" data-q="' + idx + '" data-line="' + lIdx + '" role="button" tabindex="0">' +
+                   '<span class="line-no">' + (lIdx + 1) + '</span>' +
+                   '<code>' + escapeHTML(l) + '</code></div>';
+          }).join('') + '</div>';
+      }
+
+      card.innerHTML =
+        '<div class="q-badge">' + escapeHTML(q.badge) + '</div>' +
+        '<div class="q-statement">' + q.title + '</div>' +
+        (q.sub ? '<div class="q-subtext">' + escapeHTML(q.sub) + '</div>' : '') +
+        bodyHTML +
+        '<div class="feedback-box" id="fb-' + idx + '" aria-live="polite"></div>' +
+        '<div class="q-footer">' +
+          '<button type="button" class="btn-action btn-sec" data-q="' + idx + '" data-role="prev" ' + (idx === 0 ? 'disabled' : '') + '>⬅ Anterior</button>' +
+          '<span style="font-size:0.85rem;color:var(--text-muted);font-weight:800;">' + (idx + 1) + ' / 20</span>' +
+          '<button type="button" class="btn-action" data-q="' + idx + '" data-role="next">' + (idx === 19 ? 'Finalizar Desafio 🏁' : 'Próxima ➡') + '</button>' +
+        '</div>';
+      viewport.appendChild(card);
+    });
+
+    bindAllEvents();
+  }
+
+  /* ==================== BIND DE EVENTOS ==================== */
+  function bindAllEvents(){
+    // Choice
+    document.querySelectorAll('.opt-btn[data-o]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkChoice(parseInt(btn.dataset.q,10), parseInt(btn.dataset.o,10)); });
+    });
+    // TF
+    document.querySelectorAll('.opt-btn[data-v]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkTF(parseInt(btn.dataset.q,10), btn.dataset.v === 'true'); });
+    });
+    // Multi toggle
+    document.querySelectorAll('.opt-btn[data-multi]').forEach(function(btn){
+      btn.addEventListener('click', function(){ toggleMulti(parseInt(btn.dataset.q,10), parseInt(btn.dataset.multi,10)); });
+    });
+    // Multi confirm
+    document.querySelectorAll('[data-role="input-confirm"], [data-role="sort-check"], [data-role="bucket-check"], [data-role="gap-check"], #multi-confirm-' + 0).forEach(function(){});
+    document.querySelectorAll('button[id^="multi-confirm-"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkMulti(parseInt(btn.dataset.q,10)); });
+    });
+    // Input confirm
+    document.querySelectorAll('[data-role="input-confirm"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkInput(parseInt(btn.dataset.q,10)); });
+    });
+    // Input Enter
+    document.querySelectorAll('.custom-input').forEach(function(inp){
+      inp.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ checkInput(parseInt(inp.dataset.q,10)); }
+      });
+    });
+    // Sort buttons
+    document.querySelectorAll('.btn-sort').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        moveSort(parseInt(btn.dataset.q,10), parseInt(btn.dataset.pos,10), parseInt(btn.dataset.dir,10));
+      });
+    });
+    document.querySelectorAll('[data-role="sort-check"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkSort(parseInt(btn.dataset.q,10)); });
+    });
+    // Match
+    document.querySelectorAll('.match-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        clickMatch(parseInt(btn.dataset.q,10), btn.dataset.side, btn.dataset.side === 'l' ? parseInt(btn.dataset.idx,10) : btn.dataset.val);
+      });
+    });
+    // Buckets chips
+    document.querySelectorAll('.chip-item').forEach(function(chip){
+      chip.addEventListener('click', function(){ pickChip(parseInt(chip.dataset.q,10), parseInt(chip.dataset.chip,10)); });
+    });
+    // Bucket drop
+    document.querySelectorAll('.bucket').forEach(function(bucket){
+      bucket.addEventListener('click', function(){ placeChip(parseInt(bucket.dataset.q,10), parseInt(bucket.dataset.bucket,10)); });
+      bucket.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); placeChip(parseInt(bucket.dataset.q,10), parseInt(bucket.dataset.bucket,10)); }
+      });
+    });
+    document.querySelectorAll('[data-role="bucket-check"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkBuckets(parseInt(btn.dataset.q,10)); });
+    });
+    // Gap
+    document.querySelectorAll('[data-role="gap-check"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ checkGap(parseInt(btn.dataset.q,10)); });
+    });
+    // Hotspot
+    document.querySelectorAll('.evo-card').forEach(function(el){
+      el.addEventListener('click', function(){ clickHotspot(parseInt(el.dataset.q,10), el.dataset.era, el); });
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); clickHotspot(parseInt(el.dataset.q,10), el.dataset.era, el); }
+      });
+    });
+    // Errorcode
+    document.querySelectorAll('.code-line').forEach(function(el){
+      el.addEventListener('click', function(){ clickErrorLine(parseInt(el.dataset.q,10), parseInt(el.dataset.line,10)); });
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); clickErrorLine(parseInt(el.dataset.q,10), parseInt(el.dataset.line,10)); }
+      });
+    });
+    // Prev/Next
+    document.querySelectorAll('[data-role="prev"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ showQuestion(Math.max(0, parseInt(btn.dataset.q,10) - 1)); });
+    });
+    document.querySelectorAll('[data-role="next"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ nextOrFinish(parseInt(btn.dataset.q,10)); });
+    });
+  }
+
+  /* ==================== REGISTRO DE RESPOSTA ==================== */
+  function registerAnswer(qIdx, isOk, expText){
+    if(userAnswers[qIdx] !== undefined) return;
+    userAnswers[qIdx] = { ok: isOk };
+    var fb = document.getElementById('fb-' + qIdx);
+    fb.className = 'feedback-box show ' + (isOk ? 'ok' : 'no');
+    fb.innerHTML = '<strong>' + (isOk ? '✅ Resposta Correta!' : '❌ Resposta Incorreta.') + '</strong><br>' + escapeHTML(expText);
+    var dot = document.getElementById('dot-' + qIdx);
+    if(dot) dot.className = 'nav-dot ' + (isOk ? 'done-ok' : 'done-no');
+    if(isOk){ score += 100 + (streak * 20); streak++; } else { streak = 0; }
+    updateHUD();
+  }
+
+  function disableQuestionControls(qIdx){
+    var card = document.getElementById('q-card-' + qIdx);
+    if(!card) return;
+    card.querySelectorAll('.opt-btn').forEach(function(b){ b.disabled = true; });
+    card.querySelectorAll('input, select, .btn-action:not([data-role="prev"]):not([data-role="next"])').forEach(function(el){
+      if(el.tagName === 'BUTTON' && (el.dataset.role === 'prev' || el.dataset.role === 'next')) return;
+      el.disabled = true;
+    });
+    card.querySelectorAll('.btn-sort').forEach(function(b){ b.disabled = true; });
+  }
+
+  /* ==================== TIPOS DE QUESTÃO ==================== */
+  function checkChoice(qIdx, optIdx){
+    if(userAnswers[qIdx] !== undefined) return;
     var q = DATABASE[qIdx];
-    var isCorrectPair = (q.pairs[st.l].right === st.r);
-    if (isCorrectPair) {
-      document.querySelector('#match-l-' + qIdx + ' [data-idx="' + st.l + '"]').classList.add('matched');
-      document.querySelector('#match-r-' + qIdx + ' [data-val="' + st.r + '"]').classList.add('matched');
-      st.matches[st.l] = true;
-    }
-    st.l = null; st.r = null;
-    document.querySelectorAll('#q-card-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
-    if (Object.keys(st.matches).length === q.pairs.length) {
-      registerAnswer(qIdx, true, q.exp);
+    var isOk = q.options[optIdx].ok;
+    var btns = document.querySelectorAll('#q-card-' + qIdx + ' .opt-btn');
+    btns.forEach(function(b, i){
+      b.disabled = true;
+      if(q.options[i].ok) b.classList.add('correct');
+      else if(i === optIdx) b.classList.add('wrong');
+    });
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function checkTF(qIdx, val){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var isOk = (q.ok === val);
+    var btns = document.querySelectorAll('#q-card-' + qIdx + ' .opt-btn');
+    btns.forEach(function(b){ b.disabled = true; });
+    if(val === true) btns[0].classList.add(isOk ? 'correct' : 'wrong');
+    else btns[1].classList.add(isOk ? 'correct' : 'wrong');
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function toggleMulti(qIdx, oIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    if(!multiState[qIdx]) multiState[qIdx] = new Set();
+    var set = multiState[qIdx];
+    var btn = document.querySelectorAll('#multi-opts-' + qIdx + ' .opt-btn')[oIdx];
+    if(set.has(oIdx)){
+      set.delete(oIdx);
+      btn.classList.remove('selected-multi');
+      btn.setAttribute('aria-pressed','false');
+      btn.querySelector('.chk-box').textContent = '⬜';
+    } else {
+      set.add(oIdx);
+      btn.classList.add('selected-multi');
+      btn.setAttribute('aria-pressed','true');
+      btn.querySelector('.chk-box').textContent = '☑️';
     }
   }
-}
 
-var bucketState = {};
-function pickChip(qIdx, chipIdx) {
-  if (userAnswers[qIdx]) return;
-  if (!bucketState[qIdx]) bucketState[qIdx] = { selected:null, assigned:{} };
-  bucketState[qIdx].selected = chipIdx;
-  document.querySelectorAll('#q-card-' + qIdx + ' .chip-item').forEach(function(c){
-    var parts = c.id.split('-');
-    if (parseInt(parts[1]) === qIdx && parseInt(parts[2]) === chipIdx) c.classList.add('active-chip');
-    else c.classList.remove('active-chip');
-  });
-}
-
-function placeChip(qIdx, bucketIdx) {
-  var st = bucketState[qIdx];
-  if (!st || st.selected === null) return;
-  var chipEl = document.getElementById('chip-' + qIdx + '-' + st.selected);
-  if (!chipEl) return;
-  var targetBucket = document.getElementById('b-items-' + qIdx + '-' + bucketIdx);
-  targetBucket.appendChild(chipEl);
-  chipEl.classList.remove('active-chip');
-  st.assigned[st.selected] = bucketIdx;
-  st.selected = null;
-}
-
-function checkBuckets(qIdx) {
-  var q = DATABASE[qIdx];
-  var st = bucketState[qIdx] || { assigned:{} };
-  var allAssigned = q.items.every(function(it, i){ return st.assigned[i] !== undefined; });
-  if (!allAssigned) { alert('Distribua todos os itens nos cestos antes de conferir!'); return; }
-  var isOk = q.items.every(function(it, i){ return st.assigned[i] === it.b; });
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function checkGap(qIdx) {
-  var q = DATABASE[qIdx];
-  var sel = document.getElementById('gap-sel-' + qIdx);
-  if (!sel.value) return;
-  var isOk = (sel.value === q.correct);
-  sel.disabled = true;
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function clickHotspot(qIdx, eraName, el) {
-  var q = DATABASE[qIdx];
-  var isOk = (eraName === q.target);
-  document.querySelectorAll('#q-card-' + qIdx + ' .evo-card').forEach(function(c){ c.classList.remove('picked','ok','no'); });
-  el.classList.add('picked');
-  el.classList.add(isOk ? 'ok' : 'no');
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function clickErrorLine(qIdx, lineIdx) {
-  var q = DATABASE[qIdx];
-  var isOk = (lineIdx === q.errLine);
-  var lines = document.querySelectorAll('#q-card-' + qIdx + ' .code-line');
-  lines.forEach(function(l){ l.style.pointerEvents = 'none'; });
-  lines[lineIdx].classList.add('selected-err');
-  registerAnswer(qIdx, isOk, q.exp);
-}
-
-function nextOrFinish(idx) {
-  if (idx < DATABASE.length - 1) { showQuestion(idx + 1); }
-  else { showFinalReport(); }
-}
-
-function showFinalReport() {
-  document.getElementById('questions-viewport').style.display = 'none';
-  document.getElementById('dots-container').style.display = 'none';
-  var report = document.getElementById('final-report');
-  report.classList.add('show');
-  var total = DATABASE.length;
-  var correctCount = Object.values(userAnswers).filter(function(a){ return a.ok; }).length;
-  var pct = Math.round((correctCount / total) * 100);
-  document.getElementById('final-score-txt').textContent = correctCount + ' / ' + total;
-  var badge = document.getElementById('final-feedback-badge');
-  if (pct >= 85) { badge.textContent = '🏆 Nível Ouro: Domínio pleno do Tema 01!'; badge.style.color = 'var(--ok)'; }
-  else if (pct >= 65) { badge.textContent = '👏 Nível Prata: Bom rendimento! Revise os pontos com erro.'; badge.style.color = 'var(--accent)'; }
-  else { badge.textContent = '📖 Nível Bronze: Recomenda-se refazer a leitura e o quiz.'; badge.style.color = 'var(--no)'; }
-  var repText = '====================================================\n';
-  repText += 'RELATÓRIO OFICIAL: DESAFIO TEMA 01 (20 QUESTÕES)\n';
-  repText += 'Acertos: ' + correctCount + ' de ' + total + ' (' + pct + '%) • Pontuação: ' + score + ' pts\n';
-  repText += 'Data: ' + new Date().toLocaleString('pt-BR') + '\n';
-  repText += '----------------------------------------------------\n';
-  DATABASE.forEach(function(q, i){
-    var status = userAnswers[i] && userAnswers[i].ok ? '[ACERTO]' : '[ERRO]';
-    repText += 'Q' + (i + 1).toString().padStart(2, '0') + ': ' + status + ' - ' + q.badge.split('•')[0].trim() + '\n';
-  });
-  repText += '====================================================';
-  document.getElementById('report-copy-box').value = repText;
-}
-
-document.getElementById('btn-copy-rep').addEventListener('click', function(){
-  var box = document.getElementById('report-copy-box');
-  box.select();
-  navigator.clipboard.writeText(box.value).then(function(){
-    document.getElementById('btn-copy-rep').textContent = '✅ Copiado com Sucesso!';
-    setTimeout(function(){ document.getElementById('btn-copy-rep').textContent = '📋 Copiar Resumo'; }, 2000);
-  });
-});
-
-function escapeHTML(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-function shuffle(arr) {
-  var a = arr.slice();
-  for (var i = a.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  function checkMulti(qIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var chosen = multiState[qIdx] || new Set();
+    var correctIndices = q.options.map(function(o, i){ return o.ok ? i : null; }).filter(function(i){ return i !== null; });
+    var isOk = correctIndices.length === chosen.size && correctIndices.every(function(i){ return chosen.has(i); });
+    var btns = document.querySelectorAll('#multi-opts-' + qIdx + ' .opt-btn');
+    btns.forEach(function(b, i){
+      b.disabled = true;
+      if(q.options[i].ok && chosen.has(i)){ b.className = 'opt-btn correct'; b.querySelector('.chk-box').textContent = '✅'; }
+      else if(q.options[i].ok && !chosen.has(i)){ b.className = 'opt-btn missed'; b.querySelector('.chk-box').textContent = '⚠️'; }
+      else if(!q.options[i].ok && chosen.has(i)){ b.className = 'opt-btn wrong'; b.querySelector('.chk-box').textContent = '❌'; }
+    });
+    var confirmBtn = document.getElementById('multi-confirm-' + qIdx);
+    if(confirmBtn){ confirmBtn.disabled = true; }
+    registerAnswer(qIdx, isOk, q.exp);
   }
-  return a;
-}
 
-window.addEventListener('DOMContentLoaded', initApp);
+  function checkInput(qIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var input = document.getElementById('input-' + qIdx);
+    var raw = input.value.trim();
+    if(!raw){
+      var fb = document.getElementById('fb-' + qIdx);
+      fb.className = 'feedback-box show warn';
+      fb.innerHTML = '<strong>⚠️ Digite uma resposta antes de confirmar.</strong>';
+      return;
+    }
+    input.disabled = true;
+    var isOk = false;
+    if(q.type === 'number'){
+      var num = parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,''));
+      isOk = (num === q.answer);
+    } else {
+      var normRaw = normalizeText(raw);
+      var normAns = normalizeText(q.answer);
+      // aceita singular/plural simples e substring controlada
+      if(normRaw === normAns || normRaw.indexOf(normAns) !== -1) isOk = true;
+      else if(normRaw + 's' === normAns || normAns + 's' === normRaw) isOk = true;
+    }
+    input.style.borderColor = isOk ? 'var(--ok)' : 'var(--no)';
+    var confirmBtn = input.parentElement.querySelector('[data-role="input-confirm"]');
+    if(confirmBtn) confirmBtn.disabled = true;
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function moveSort(qIdx, iIdx, dir){
+    if(userAnswers[qIdx] !== undefined) return;
+    var list = document.getElementById('sort-list-' + qIdx);
+    var items = Array.from(list.children);
+    var targetIdx = iIdx + dir;
+    if(targetIdx < 0 || targetIdx >= items.length) return;
+    if(dir === 1) list.insertBefore(items[targetIdx], items[iIdx]);
+    else list.insertBefore(items[iIdx], items[targetIdx]);
+    // Atualiza data-pos de acordo com a nova ordem DOM
+    Array.from(list.children).forEach(function(el, newI){
+      el.dataset.pos = newI;
+      var btns = el.querySelectorAll('.btn-sort');
+      btns[0].dataset.pos = newI;
+      btns[1].dataset.pos = newI;
+    });
+  }
+
+  function checkSort(qIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var list = document.getElementById('sort-list-' + qIdx);
+    // Compara a ordem DOM visual com a ordem correta (índices originais)
+    var currentPositions = Array.from(list.children).map(function(c){ return parseInt(c.dataset.pos, 10); });
+    // currentPositions agora reflete a ordem DOM: [data-pos do 1º, data-pos do 2º, ...]
+    // Para acertar, a sequência de data-pos deve ser exatamente correctOrder
+    var isOk = currentPositions.length === q.correctOrder.length &&
+               currentPositions.every(function(val, i){ return val === q.correctOrder[i]; });
+    list.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
+    var checkBtn = document.querySelector('[data-role="sort-check"][data-q="' + qIdx + '"]');
+    if(checkBtn) checkBtn.disabled = true;
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function clickMatch(qIdx, side, val){
+    if(userAnswers[qIdx] !== undefined) return;
+    if(!matchState[qIdx]) matchState[qIdx] = { l:null, r:null, matches:{}, wrongCount:0 };
+    var st = matchState[qIdx];
+    var q = DATABASE[qIdx];
+
+    if(side === 'l'){
+      if(st.matches[val]) return; // já pareado
+      document.querySelectorAll('#match-l-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
+      st.l = val;
+      var elL = document.querySelector('#match-l-' + qIdx + ' [data-idx="' + val + '"]');
+      if(elL) elL.classList.add('selected');
+    } else {
+      if(Object.values(st.matches).indexOf(val) !== -1) return;
+      document.querySelectorAll('#match-r-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
+      st.r = val;
+      var elR = document.querySelector('#match-r-' + qIdx + ' [data-val="' + val + '"]');
+      if(elR) elR.classList.add('selected');
+    }
+
+    if(st.l !== null && st.r !== null){
+      var isCorrectPair = (q.pairs[st.l].right === st.r);
+      var elLeft = document.querySelector('#match-l-' + qIdx + ' [data-idx="' + st.l + '"]');
+      var elRight = document.querySelector('#match-r-' + qIdx + ' [data-val="' + st.r + '"]');
+
+      if(isCorrectPair){
+        elLeft.classList.add('matched');
+        elRight.classList.add('matched');
+        st.matches[st.l] = st.r;
+      } else {
+        // Feedback visual de erro temporário e permite nova tentativa
+        elLeft.classList.add('temp-wrong');
+        elRight.classList.add('temp-wrong');
+        setTimeout(function(){
+          elLeft.classList.remove('temp-wrong');
+          elRight.classList.remove('temp-wrong');
+        }, 600);
+        st.wrongCount++;
+      }
+      st.l = null; st.r = null;
+      document.querySelectorAll('#q-card-' + qIdx + ' .match-btn').forEach(function(b){ b.classList.remove('selected'); });
+
+      // Só finaliza quando todos os pares estiverem corretos
+      if(Object.keys(st.matches).length === q.pairs.length){
+        registerAnswer(qIdx, st.wrongCount === 0, q.exp);
+      }
+    }
+  }
+
+  function pickChip(qIdx, chipIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    if(!bucketState[qIdx]) bucketState[qIdx] = { selected:null, assigned:{} };
+    bucketState[qIdx].selected = chipIdx;
+    document.querySelectorAll('#q-card-' + qIdx + ' .chip-item').forEach(function(c){
+      var parts = c.id.split('-');
+      if(parseInt(parts[1],10) === qIdx && parseInt(parts[2],10) === chipIdx) c.classList.add('active-chip');
+      else c.classList.remove('active-chip');
+    });
+  }
+
+  function placeChip(qIdx, bucketIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var st = bucketState[qIdx];
+    if(!st || st.selected === null) return;
+    var chipEl = document.getElementById('chip-' + qIdx + '-' + st.selected);
+    if(!chipEl) return;
+    var targetBucket = document.getElementById('b-items-' + qIdx + '-' + bucketIdx);
+    targetBucket.appendChild(chipEl);
+    chipEl.classList.remove('active-chip');
+    st.assigned[st.selected] = bucketIdx;
+    st.selected = null;
+  }
+
+  function checkBuckets(qIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var st = bucketState[qIdx] || { assigned:{} };
+    var allAssigned = q.items.every(function(it, i){ return st.assigned[i] !== undefined; });
+    var fb = document.getElementById('fb-' + qIdx);
+    if(!allAssigned){
+      fb.className = 'feedback-box show warn';
+      fb.innerHTML = '<strong>⚠️ Distribua todos os itens nos cestos antes de conferir!</strong>';
+      return;
+    }
+    var isOk = q.items.every(function(it, i){ return st.assigned[i] === it.b; });
+    var checkBtn = document.querySelector('[data-role="bucket-check"][data-q="' + qIdx + '"]');
+    if(checkBtn) checkBtn.disabled = true;
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function checkGap(qIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var sel = document.getElementById('gap-sel-' + qIdx);
+    if(!sel.value){
+      var fb = document.getElementById('fb-' + qIdx);
+      fb.className = 'feedback-box show warn';
+      fb.innerHTML = '<strong>⚠️ Escolha uma opção antes de confirmar.</strong>';
+      return;
+    }
+    var isOk = (sel.value === q.correct);
+    sel.disabled = true;
+    var checkBtn = document.querySelector('[data-role="gap-check"][data-q="' + qIdx + '"]');
+    if(checkBtn) checkBtn.disabled = true;
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function clickHotspot(qIdx, eraName, el){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var isOk = (eraName === q.target);
+    document.querySelectorAll('#q-card-' + qIdx + ' .evo-card').forEach(function(c){
+      c.classList.remove('picked','ok','no');
+      c.style.pointerEvents = 'none';
+    });
+    el.classList.add('picked');
+    el.classList.add(isOk ? 'ok' : 'no');
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  function clickErrorLine(qIdx, lineIdx){
+    if(userAnswers[qIdx] !== undefined) return;
+    var q = DATABASE[qIdx];
+    var isOk = (lineIdx === q.errLine);
+    var lines = document.querySelectorAll('#q-card-' + qIdx + ' .code-line');
+    lines.forEach(function(l){ l.classList.add('locked'); l.style.pointerEvents = 'none'; });
+    lines[lineIdx].classList.add('selected-err');
+    registerAnswer(qIdx, isOk, q.exp);
+  }
+
+  /* ==================== NAVEGAÇÃO ==================== */
+  function nextOrFinish(idx){
+    if(idx < DATABASE.length - 1){
+      showQuestion(idx + 1);
+    } else {
+      var answered = Object.keys(userAnswers).length;
+      var msg = answered < DATABASE.length
+        ? 'Você ainda tem ' + (DATABASE.length - answered) + ' questão(ões) sem responder. Finalizar mesmo assim?'
+        : 'Finalizar o desafio e ver o relatório?';
+      abrirModal(msg).then(function(ok){
+        if(ok) showFinalReport();
+      });
+    }
+  }
+
+  /* ==================== RELATÓRIO FINAL ==================== */
+  function showFinalReport(){
+    document.getElementById('questions-viewport').style.display = 'none';
+    document.getElementById('dots-container').style.display = 'none';
+    var report = document.getElementById('final-report');
+    report.classList.add('show');
+    var total = DATABASE.length;
+    var correctCount = Object.keys(userAnswers).filter(function(k){ return userAnswers[k].ok; }).length;
+    var pct = Math.round((correctCount / total) * 100);
+    document.getElementById('final-score-txt').textContent = correctCount + ' / ' + total;
+    var badge = document.getElementById('final-feedback-badge');
+    if(pct >= 85){ badge.textContent = '🏆 Nível Ouro: Domínio pleno do Tema 01!'; badge.style.color = 'var(--ok)'; }
+    else if(pct >= 65){ badge.textContent = '👏 Nível Prata: Bom rendimento! Revise os pontos com erro.'; badge.style.color = 'var(--accent)'; }
+    else { badge.textContent = '📖 Nível Bronze: Recomenda-se refazer a leitura e o quiz.'; badge.style.color = 'var(--no)'; }
+    var repText = '====================================================\n';
+    repText += 'RELATÓRIO OFICIAL: DESAFIO TEMA 01 (20 QUESTÕES)\n';
+    repText += 'Acertos: ' + correctCount + ' de ' + total + ' (' + pct + '%) • Pontuação: ' + score + ' pts\n';
+    repText += 'Data: ' + new Date().toLocaleString('pt-BR') + '\n';
+    repText += '----------------------------------------------------\n';
+    DATABASE.forEach(function(q, i){
+      var status = userAnswers[i] && userAnswers[i].ok ? '[ACERTO]' : '[ERRO]';
+      repText += 'Q' + String(i + 1).padStart(2, '0') + ': ' + status + ' - ' + q.badge.split('•')[0].trim() + '\n';
+    });
+    repText += '====================================================';
+    document.getElementById('report-copy-box').value = repText;
+    report.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  /* ==================== AÇÕES DO RELATÓRIO ==================== */
+  document.getElementById('btn-copy-rep').addEventListener('click', function(){
+    var box = document.getElementById('report-copy-box');
+    var btn = document.getElementById('btn-copy-rep');
+    var original = '📋 Copiar Resumo';
+    function sucesso(){ btn.textContent = '✅ Copiado com Sucesso!'; setTimeout(function(){ btn.textContent = original; }, 2000); }
+    function fallback(){
+      box.select();
+      try { document.execCommand('copy'); sucesso(); } catch(e){ btn.textContent = '❌ Erro ao copiar'; setTimeout(function(){ btn.textContent = original; }, 2000); }
+    }
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(box.value).then(sucesso).catch(fallback);
+    } else {
+      fallback();
+    }
+  });
+
+  document.getElementById('btn-revisar').addEventListener('click', function(){
+    document.getElementById('final-report').classList.remove('show');
+    document.getElementById('questions-viewport').style.display = 'block';
+    document.getElementById('dots-container').style.display = 'flex';
+    showQuestion(curQ);
+  });
+
+  document.getElementById('btn-reiniciar').addEventListener('click', function(){
+    abrirModal('Reiniciar o desafio? Todas as respostas serão apagadas.').then(function(ok){
+      if(ok) location.reload();
+    });
+  });
+
+  /* ==================== INIT ==================== */
+  function initApp(){
+    renderNavDots();
+    renderAllQuestions();
+    showQuestion(0);
+  }
+
+  if(document.readyState === 'loading'){
+    window.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+})();
 </script>
 </body>
 </html>
